@@ -3,6 +3,22 @@ import { useState } from "react";
 const difficultyList = ["Easy", "Medium", "Hard", "Custom"];
 const inputList = ["Rows", "Columns", "Mines"];
 
+function updateDimensions(e, inputs, setInputs) {
+  switch (e.target.value) {
+    case "easy":
+      setInputs({ difficulty: "easy", rows: 9, columns: 9, mines: 10 });
+      break;
+    case "medium":
+      setInputs({ difficulty: "medium", rows: 16, columns: 16, mines: 40 });
+      break;
+    case "hard":
+      setInputs({ difficulty: "hard", rows: 16, columns: 30, mines: 99 });
+      break;
+    default:
+      setInputs({ ...inputs, difficulty: "custom" });
+  }
+}
+
 function DifficultyRadio({ difficulty, inputs, setInputs }) {
   let lbl = difficulty.toLowerCase();
   return (
@@ -14,7 +30,7 @@ function DifficultyRadio({ difficulty, inputs, setInputs }) {
         value={lbl}
         checked={inputs.difficulty === lbl}
         // TODO: add useEffect to change params
-        onChange={(e) => setInputs({ ...inputs, difficulty: e.target.value })}
+        onChange={(e) => updateDimensions(e, inputs, setInputs)}
       />
       <label htmlFor={lbl}>{difficulty}</label>
     </>
@@ -30,7 +46,7 @@ function Input({ input, inputs, setInputs }) {
         type="text"
         id={lbl}
         name={lbl}
-        //value={inputs.[lbl]} is this line needed? prettier doesn't like it
+        value={inputs.[lbl]} // prettier doesn't like it
         // TODO: allow numbers only, prevent out-of-bounds numbers
         onChange={(e) => setInputs({ ...inputs, [lbl]: e.target.value })}
       />
@@ -66,7 +82,6 @@ function Header({ args }) {
           />
         );
       })}
-      <br /> TEMP
       {inputs.difficulty}
       {inputs.mines}
     </>
