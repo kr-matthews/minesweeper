@@ -15,6 +15,7 @@ function App() {
   const [cols, setCols] = useState(9);
   const [mines, setMines] = useState(10);
 
+  const [gameState, setGameState] = useState("uninitialized");
   const [field, setField] = useState([
     // dummy data for testing
     [
@@ -33,7 +34,7 @@ function App() {
       <Header
         args={{ diff, setDiff, rows, setRows, cols, setCols, mines, setMines }}
       />
-      <Field args={{ field, setField }} />
+      <Field args={{ field, setField, gameState, setGameState }} />
       <Footer />
     </>
   );

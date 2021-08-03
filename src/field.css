@@ -5,14 +5,14 @@
   margin-right: auto;
 }
 
-.square {
+.cell {
   border: solid 2px;
   text-align: center;
   width: 3em;
   height: 3em;
 }
 
-.square button {
+.cell button {
   width: 100%;
   height: 100%;
   background-color: transparent;

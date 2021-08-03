@@ -1,14 +1,15 @@
-function Square({ args }) {
-  let { mine, number, state } = args;
+function Cell({ args }) {
+  let { mine, number, state, gameState } = args;
   return (
-    <td className="square">
+    // TODO: change classname to not give away mine locations
+    <td className={"cell " + mine + " " + state + " " + gameState}>
       {state === "show" ? (mine ? "M" : number) : state}
     </td>
   );
 }
 
 function Field({ args }) {
-  let { field } = args;
+  let { field, gameState } = args;
   return (
     <table className="field">
       <tbody>
@@ -16,7 +17,12 @@ function Field({ args }) {
           return (
             <tr key={row_ind}>
               {row.map(([mine, number, state], col_ind) => {
-                return <Square key={col_ind} args={{ mine, number, state }} />;
+                return (
+                  <Cell
+                    key={col_ind}
+                    args={{ mine, number, state, gameState }}
+                  />
+                );
               })}
             </tr>
           );
@@ -27,5 +33,3 @@ function Field({ args }) {
 }
 
 export default Field;
-
-/// borders not working
