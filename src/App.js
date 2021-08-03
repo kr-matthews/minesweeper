@@ -10,8 +10,12 @@ import "./field.css";
 function App() {
   // Constants
 
-  const [diff, setDiff] = useState("easy");
-  const [params, setParams] = useState({ rows: 9, columns: 9, mines: 9 });
+  const [params, setParams] = useState({
+    difficulty: "easy",
+    rows: 9,
+    columns: 9,
+    mines: 9,
+  });
 
   const [gameState, setGameState] = useState("uninitialized");
   const [field, setField] = useState([
@@ -29,8 +33,10 @@ function App() {
   return (
     <>
       <h1>Minesweeper</h1>
-      <Header args={{ diff, setDiff, params, setParams }} />
+      <Header args={{ params, setParams }} />
       <Field args={{ field, setField, gameState, setGameState }} />
+      {params.difficulty}
+      {params.mines}
       <Footer />
     </>
   );

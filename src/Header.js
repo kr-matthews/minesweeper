@@ -1,26 +1,28 @@
-const difficulties = ["Easy", "Medium", "Hard", "Custom"];
-const parameters = ["Rows", "Columns", "Mines"];
+import { useState } from "react";
 
-function DifficultyRadio({ txt, diff, setDiff }) {
-  let lbl = txt.toLowerCase();
+const difficultyList = ["Easy", "Medium", "Hard", "Custom"];
+const inputList = ["Rows", "Columns", "Mines"];
+
+function DifficultyRadio({ difficulty, inputs, setInputs }) {
+  let lbl = difficulty.toLowerCase();
   return (
     <>
       <input
         type="radio"
         id={lbl}
-        name="diff"
+        name="difficulty"
         value={lbl}
-        checked={diff === lbl}
+        checked={inputs.difficulty === lbl}
         // TODO: add useEffect to change params
-        onChange={(e) => setDiff(e.target.value)}
+        onChange={(e) => setInputs({ ...inputs, difficulty: e.target.value })}
       />
-      <label htmlFor={lbl}>{txt}</label>
+      <label htmlFor={lbl}>{difficulty}</label>
     </>
   );
 }
 
-function ParamInput({ param, params, setParams }) {
-  let lbl = param.toLowerCase();
+function Input({ input, inputs, setInputs }) {
+  let lbl = input.toLowerCase();
   return (
     <label htmlFor={lbl}>
       Rows:
@@ -28,35 +30,45 @@ function ParamInput({ param, params, setParams }) {
         type="text"
         id={lbl}
         name={lbl}
-        value={params.[lbl]}
+        //value={inputs.[lbl]} is this line needed? prettier doesn't like it
         // TODO: allow numbers only, prevent out-of-bounds numbers
-        // TODO: add useEffect to change field
-        onChange={(e) => setParams({ ...params, [lbl]: e.target.value })}
+        onChange={(e) => setInputs({ ...inputs, [lbl]: e.target.value })}
       />
     </label>
   );
 }
 
 function Header({ args }) {
-  let { diff, setDiff, params, setParams } = args;
+  let { params, setParams } = args;
+
+  const [inputs, setInputs] = useState(params);
+
   return (
     <>
-      {difficulties.map((txt) => {
+      {difficultyList.map((difficulty) => {
         return (
-          <DifficultyRadio key={txt} txt={txt} diff={diff} setDiff={setDiff} />
-        );
-      })}
-      <br /> {/* TODO: improve css and remove this */}
-      {parameters.map((param) => {
-        return (
-          <ParamInput
-            key={param}
-            param={param}
-            params={params}
-            setParams={setParams}
+          <DifficultyRadio
+            key={difficulty}
+            difficulty={difficulty}
+            inputs={inputs}
+            setInputs={setInputs}
           />
         );
       })}
+      <br /> {/* TODO: improve css and remove this */}
+      {inputList.map((input) => {
+        return (
+          <Input
+            key={input}
+            input={input}
+            inputs={inputs}
+            setInputs={setInputs}
+          />
+        );
+      })}
+      <br /> TEMP
+      {inputs.difficulty}
+      {inputs.mines}
     </>
   );
 }
