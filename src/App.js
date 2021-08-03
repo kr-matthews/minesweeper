@@ -11,9 +11,7 @@ function App() {
   // Constants
 
   const [diff, setDiff] = useState("easy");
-  const [rows, setRows] = useState(9);
-  const [cols, setCols] = useState(9);
-  const [mines, setMines] = useState(10);
+  const [params, setParams] = useState({ rows: 9, columns: 9, mines: 9 });
 
   const [gameState, setGameState] = useState("uninitialized");
   const [field, setField] = useState([
@@ -31,9 +29,7 @@ function App() {
   return (
     <>
       <h1>Minesweeper</h1>
-      <Header
-        args={{ diff, setDiff, rows, setRows, cols, setCols, mines, setMines }}
-      />
+      <Header args={{ diff, setDiff, params, setParams }} />
       <Field args={{ field, setField, gameState, setGameState }} />
       <Footer />
     </>
