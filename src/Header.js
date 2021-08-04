@@ -3,7 +3,15 @@ import { useState } from "react";
 const difficultyList = ["Easy", "Medium", "Hard", "Custom"];
 const inputList = ["Rows", "Columns", "Mines"];
 
-function updateDimensions(e, inputs, setInputs) {
+// helper functions
+
+function isNumber(str) {
+  return str === "" || /^[0-9\b]+$/.test(str);
+}
+
+// click handlers
+
+function updateInputs(e, inputs, setInputs) {
   switch (e.target.value) {
     case "easy":
       setInputs({ difficulty: "easy", rows: 9, columns: 9, mines: 10 });
@@ -19,6 +27,28 @@ function updateDimensions(e, inputs, setInputs) {
   }
 }
 
+// TODO: figure out best way for data validation and updating
+//   likely need to allow any (0-9)* in row & col, but show check or cross
+//   don't want to auto lower mines because they may be backspacing row temp
+function updateAnInput(e, inputs, setInputs, lbl) {
+  let str = e.target.value;
+  let num = +str;
+  // only proceed if the value is a number, within bounds
+  if (isNumber(str) && lbl === "mines" && num < inputs.rows * inputs.columns) {
+    // not only update lbl, but change difficulty is now custom
+    setInputs({ ...inputs, [lbl]: str, difficulty: "custom" });
+  } else if (isNumber(str) && num <= 30) {
+    setInputs({
+      ...inputs,
+      [lbl]: str,
+      difficulty: "custom",
+      mines: Math.min(inputs.mines, inputs.rows * inputs.columns - 1),
+    });
+  }
+}
+
+// function components
+
 function DifficultyRadio({ difficulty, inputs, setInputs }) {
   let lbl = difficulty.toLowerCase();
   return (
@@ -29,8 +59,7 @@ function DifficultyRadio({ difficulty, inputs, setInputs }) {
         name="difficulty"
         value={lbl}
         checked={inputs.difficulty === lbl}
-        // TODO: add useEffect to change params
-        onChange={(e) => updateDimensions(e, inputs, setInputs)}
+        onChange={(e) => updateInputs(e, inputs, setInputs)}
       />
       <label htmlFor={lbl}>{difficulty}</label>
     </>
@@ -41,18 +70,25 @@ function Input({ input, inputs, setInputs }) {
   let lbl = input.toLowerCase();
   return (
     <label htmlFor={lbl}>
-      Rows:
+      {input}:
       <input
         type="text"
         id={lbl}
         name={lbl}
         value={inputs.[lbl]} // prettier doesn't like it
         // TODO: allow numbers only, prevent out-of-bounds numbers
-        onChange={(e) => setInputs({ ...inputs, [lbl]: e.target.value })}
+        onChange={(e) => updateAnInput(e, inputs, setInputs, lbl)}
       />
     </label>
   );
 }
+
+// primary component
+
+// TODO: add submit button (and handler)
+// TODO: add -/+ buttons around each input box
+// TODO: display mine density
+// TODO: display suggested mines for custom
 
 function Header({ args }) {
   let { params, setParams } = args;
@@ -82,8 +118,8 @@ function Header({ args }) {
           />
         );
       })}
+      {inputs.rows + " " + inputs.columns + " " + inputs.mines}
       {inputs.difficulty}
-      {inputs.mines}
     </>
   );
 }
