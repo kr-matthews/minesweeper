@@ -14,7 +14,7 @@ function App() {
     difficulty: "easy",
     rows: 9,
     columns: 9,
-    mines: 9,
+    mines: 10,
   });
 
   const [gameState, setGameState] = useState("uninitialized");

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const difficultyList = ["Easy", "Medium", "Hard", "Custom"];
+const difficultyList = ["Easy", "Medium", "Hard"];
 const inputList = ["Rows", "Columns", "Mines"];
 
 // helper functions
@@ -9,41 +9,44 @@ function isNumber(str) {
   return str === "" || /^[0-9\b]+$/.test(str);
 }
 
-// click handlers
-
-function updateInputs(e, inputs, setInputs) {
-  switch (e.target.value) {
-    case "easy":
-      setInputs({ difficulty: "easy", rows: 9, columns: 9, mines: 10 });
-      break;
-    case "medium":
-      setInputs({ difficulty: "medium", rows: 16, columns: 16, mines: 40 });
-      break;
-    case "hard":
-      setInputs({ difficulty: "hard", rows: 16, columns: 30, mines: 99 });
-      break;
+function presets(diff) {
+  switch (diff) {
+    case "Easy":
+      return { rows: 9, cols: 9, mines: 10 };
+    case "Medium":
+      return { rows: 16, cols: 16, mines: 40 };
+    case "Hard":
+      return { rows: 16, cols: 30, mines: 99 };
     default:
-      setInputs({ ...inputs, difficulty: "custom" });
+      return { rows: 10, cols: 10, mines: 99 };
   }
 }
 
-// TODO: figure out best way for data validation and updating
-//   likely need to allow any (0-9)* in row & col, but show check or cross
-//   don't want to auto lower mines because they may be backspacing row temp
+function displayDifficulty(diff) {
+  let { rows, cols, mines } = presets(diff);
+  return diff + ": " + rows + "x" + cols + ", " + mines + " mines";
+}
+
+// click handlers
+
+function updateDifficulty(e, inputs, setInputs) {
+  setInputs({ ...inputs, difficulty: e.target.value });
+}
+
 function updateAnInput(e, inputs, setInputs, lbl) {
   let str = e.target.value;
   let num = +str;
-  // only proceed if the value is a number, within bounds
-  if (isNumber(str) && lbl === "mines" && num < inputs.rows * inputs.columns) {
-    // not only update lbl, but change difficulty is now custom
-    setInputs({ ...inputs, [lbl]: str, difficulty: "custom" });
-  } else if (isNumber(str) && num <= 30) {
-    setInputs({
-      ...inputs,
-      [lbl]: str,
-      difficulty: "custom",
-      mines: Math.min(inputs.mines, inputs.rows * inputs.columns - 1),
-    });
+  // only proceed if the value consists of digits (or is blank)
+  if (isNumber(str)) {
+    setInputs({ ...inputs, [lbl]: num });
+  }
+}
+
+function adjustNumber(lbl, inputs, setInputs, change) {
+  let num = inputs.[lbl] // prettier doesn't like it
+  // only proceed if the number will remain positive
+  if (change > 0 || num > 0 ) {
+    setInputs({ ...inputs, [lbl]: num + change });
   }
 }
 
@@ -59,9 +62,9 @@ function DifficultyRadio({ difficulty, inputs, setInputs }) {
         name="difficulty"
         value={lbl}
         checked={inputs.difficulty === lbl}
-        onChange={(e) => updateInputs(e, inputs, setInputs)}
+        onChange={(e) => updateDifficulty(e, inputs, setInputs)}
       />
-      <label htmlFor={lbl}>{difficulty}</label>
+      <label htmlFor={lbl}>{displayDifficulty(difficulty)}</label>
     </>
   );
 }
@@ -71,22 +74,33 @@ function Input({ input, inputs, setInputs }) {
   return (
     <label htmlFor={lbl}>
       {input}:
+      <button
+        type="button"
+        onClick={() => adjustNumber(lbl, inputs, setInputs, -1)}
+      >
+        -
+      </button>
       <input
         type="text"
         id={lbl}
         name={lbl}
         value={inputs.[lbl]} // prettier doesn't like it
-        // TODO: allow numbers only, prevent out-of-bounds numbers
         onChange={(e) => updateAnInput(e, inputs, setInputs, lbl)}
       />
+      <button
+        type="button"
+        onClick={() => adjustNumber(lbl, inputs, setInputs, 1)}
+      >
+        +
+      </button>
     </label>
   );
 }
 
 // primary component
 
-// TODO: add submit button (and handler)
-// TODO: add -/+ buttons around each input box
+// TODO: add handlers for both submit buttons
+// TODO: add validation check/cross after boxes, with hover message
 // TODO: display mine density
 // TODO: display suggested mines for custom
 
@@ -97,6 +111,7 @@ function Header({ args }) {
 
   return (
     <>
+      <p>Select a standard difficulty, or specify custom parameters.</p>
       {difficultyList.map((difficulty) => {
         return (
           <DifficultyRadio
@@ -107,7 +122,8 @@ function Header({ args }) {
           />
         );
       })}
-      <br /> {/* TODO: improve css and remove this */}
+      <button type="button">Start Standard Game</button>
+
       {inputList.map((input) => {
         return (
           <Input
@@ -118,8 +134,7 @@ function Header({ args }) {
           />
         );
       })}
-      {inputs.rows + " " + inputs.columns + " " + inputs.mines}
-      {inputs.difficulty}
+      <button type="button">Start Custom Game</button>
     </>
   );
 }
