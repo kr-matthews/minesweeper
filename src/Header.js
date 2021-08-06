@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { extract } from "./objectAttributeAccessor.js";
 
+// constants
+
 const difficultyList = ["Easy", "Medium", "Hard"];
 const inputList = ["Rows", "Columns", "Mines"];
 
@@ -41,6 +43,19 @@ function presets(diff) {
 function displayDifficulty(diff) {
   let { rows, cols, mines } = presets(diff);
   return diff + ": " + rows + "x" + cols + ", " + mines + " mines";
+}
+
+function tooltip(input) {
+  // input boxes already enforce digits-only (ie non-negative integers)
+  switch (input) {
+    case "rows":
+      return "Must be between 1 and 24 inclusive.";
+    case "columns":
+      return "Must be between 1 and 30 inclusive.";
+    case "mines":
+      return "Must be fewer mines than cells.";
+    default:
+  }
 }
 
 // click handlers
@@ -112,7 +127,9 @@ function Input({ input, inputs, setInputs }) {
       {isValidInput(lbl, inputs) ? (
         <span style={{ color: "green" }}>&#10003;</span>
       ) : (
-        <span style={{ color: "red" }}>&#10007;</span>
+        <span className="toolcontainer" style={{ color: "red" }}>
+          &#10007;<span className="tooltip">{tooltip(lbl)}</span>
+        </span>
       )}
     </label>
   );
@@ -120,10 +137,9 @@ function Input({ input, inputs, setInputs }) {
 
 // primary component
 
-// TODO: add handlers for both submit buttons
-// TODO: add validation check/cross after boxes, with hover message
 // TODO: display mine density
 // TODO: display suggested mines for custom
+// TODO: add handlers for both submit buttons
 
 function Header({ args }) {
   let { params, setParams } = args;
