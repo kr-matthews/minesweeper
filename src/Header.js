@@ -1,3 +1,5 @@
+// TODO: add help pop-up
+
 import { useState } from "react";
 
 import { extract } from "./objectAttributeAccessor.js";
@@ -220,3 +222,7 @@ function Header({ args }) {
 }
 
 export default Header;
+
+// for testing
+
+export { isNumber, isValidInput };
