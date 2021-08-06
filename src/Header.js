@@ -13,9 +13,9 @@ function isNumber(str) {
   return str === "" || /^[0-9\b]+$/.test(str);
 }
 
-function isValidInput(input, inputs) {
+function isValidInput(inp, inputs) {
   let { rows, columns, mines } = inputs;
-  switch (input) {
+  switch (inp) {
     case "mines":
       return 0 <= mines && mines < rows * columns;
     case "rows":
@@ -29,25 +29,26 @@ function isValidInput(input, inputs) {
 
 function presets(diff) {
   switch (diff) {
-    case "Easy":
+    case "easy":
       return { rows: 9, cols: 9, mines: 10 };
-    case "Medium":
+    case "medium":
       return { rows: 16, cols: 16, mines: 40 };
-    case "Hard":
+    case "hard":
       return { rows: 16, cols: 30, mines: 99 };
     default:
       return { rows: 10, cols: 10, mines: 99 };
   }
 }
 
-function displayDifficulty(diff) {
+function displayDifficulty(difficulty) {
+  let diff = difficulty.toLowerCase();
   let { rows, cols, mines } = presets(diff);
   return diff + ": " + rows + "x" + cols + ", " + mines + " mines";
 }
 
-function tooltip(input) {
+function tooltip(inp) {
   // input boxes already enforce digits-only (ie non-negative integers)
-  switch (input) {
+  switch (inp) {
     case "rows":
       return "Must be between 1 and 24 inclusive.";
     case "columns":
@@ -64,20 +65,20 @@ function updateDifficulty(e, inputs, setInputs) {
   setInputs({ ...inputs, difficulty: e.target.value });
 }
 
-function updateAnInput(e, inputs, setInputs, lbl) {
+function updateAnInput(e, inputs, setInputs, inp) {
   let str = e.target.value;
   let num = +str;
   // only proceed if the value consists of digits (or is blank)
   if (isNumber(str)) {
-    setInputs({ ...inputs, [lbl]: num });
+    setInputs({ ...inputs, [inp]: num });
   }
 }
 
-function adjustNumber(lbl, inputs, setInputs, change) {
-  let num = extract(inputs, lbl); //inputs.[lbl] // prettier doesn't like it
+function adjustNumber(inp, inputs, setInputs, change) {
+  let num = extract(inputs, inp); //inputs.[inp] // prettier doesn't like it
   // only proceed if the number will remain positive
   if (change > 0 || num > 0) {
-    setInputs({ ...inputs, [lbl]: num + change });
+    setInputs({ ...inputs, [inp]: num + change });
   }
 }
 
@@ -96,58 +97,60 @@ function startCustom(inputs, setParams, setGameState) {
   }
 }
 
-function startStandard(setParams, setGameState) {
-  // TODO:
+function startStandard(diff, setParams, setGameState) {
+  // based on radio button selection so always valid
+  setGameState("uninitialized");
+  setParams(presets(diff));
 }
 
 // function components
 
 function DifficultyRadio({ difficulty, inputs, setInputs }) {
-  let lbl = difficulty.toLowerCase();
+  let diff = difficulty.toLowerCase();
   return (
     <>
       <input
         type="radio"
-        id={lbl}
+        id={diff}
         name="difficulty"
-        value={lbl}
-        checked={inputs.difficulty === lbl}
+        value={diff}
+        checked={inputs.difficulty === diff}
         onChange={(e) => updateDifficulty(e, inputs, setInputs)}
       />
-      <label htmlFor={lbl}>{displayDifficulty(difficulty)}</label>
+      <label htmlFor={diff}>{displayDifficulty(difficulty)}</label>
     </>
   );
 }
 
 function Input({ input, inputs, setInputs }) {
-  let lbl = input.toLowerCase();
+  let inp = input.toLowerCase();
   return (
-    <label htmlFor={lbl}>
+    <label htmlFor={inp}>
       {input}:
       <button
         type="button"
-        onClick={() => adjustNumber(lbl, inputs, setInputs, -1)}
+        onClick={() => adjustNumber(inp, inputs, setInputs, -1)}
       >
         -
       </button>
       <input
         type="text"
-        id={lbl}
-        name={lbl}
-        value={extract(inputs, lbl)} //{inputs.[lbl]} // prettier doesn't like it
-        onChange={(e) => updateAnInput(e, inputs, setInputs, lbl)}
+        id={inp}
+        name={inp}
+        value={extract(inputs, inp)} //{inputs.[inp]} // prettier doesn't like it
+        onChange={(e) => updateAnInput(e, inputs, setInputs, inp)}
       />
       <button
         type="button"
-        onClick={() => adjustNumber(lbl, inputs, setInputs, 1)}
+        onClick={() => adjustNumber(inp, inputs, setInputs, 1)}
       >
         +
       </button>
-      {isValidInput(lbl, inputs) ? (
+      {isValidInput(inp, inputs) ? (
         <span style={{ color: "green" }}>&#10003;</span>
       ) : (
         <span className="toolcontainer" style={{ color: "red" }}>
-          &#10007;<span className="tooltip">{tooltip(lbl)}</span>
+          &#10007;<span className="tooltip">{tooltip(inp)}</span>
         </span>
       )}
     </label>
@@ -156,7 +159,6 @@ function Input({ input, inputs, setInputs }) {
 
 // primary component
 
-// TODO: add handlers for standard submit button
 // TODO: display mine density
 // TODO: display suggested mines for custom
 
@@ -180,7 +182,9 @@ function Header({ args }) {
       })}
       <button
         type="button"
-        onClick={() => startStandard(setParams, setGameState)}
+        onClick={() =>
+          startStandard(inputs.difficulty, setParams, setGameState)
+        }
       >
         Start Standard Game
       </button>
