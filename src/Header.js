@@ -23,6 +23,7 @@ function isValidInput(inp, inputs) {
     case "columns":
       return 0 < columns && columns <= 30;
     default:
+      // shouldn't happen
       return false;
   }
 }
@@ -36,6 +37,7 @@ function presets(diff) {
     case "hard":
       return { rows: 16, cols: 30, mines: 99 };
     default:
+      // shouldn't happen
       return { rows: 10, cols: 10, mines: 99 };
   }
 }
@@ -56,6 +58,8 @@ function tooltip(inp) {
     case "mines":
       return "Must be fewer mines than cells.";
     default:
+      // shouldn't happen
+      return "An unknown error has occured.";
   }
 }
 
@@ -153,14 +157,17 @@ function Input({ input, inputs, setInputs }) {
           &#10007;<span className="tooltip">{tooltip(inp)}</span>
         </span>
       )}
+      {input === "Mines" && (
+        <div>
+          Mine density:{" "}
+          {Math.round((100 * inputs.mines) / (inputs.rows * inputs.columns))}%
+        </div>
+      )}
     </label>
   );
 }
 
 // primary component
-
-// TODO: display mine density
-// TODO: display suggested mines for custom
 
 function Header({ args }) {
   let { params, setParams, setGameState } = args;
@@ -169,7 +176,10 @@ function Header({ args }) {
 
   return (
     <>
-      <p>Select a standard difficulty, or specify custom parameters.</p>
+      <div>Select a standard difficulty, or specify custom parameters.</div>
+      <div>
+        For a custom game, a mine density between 12% and 20% is recommended.
+      </div>
       {difficultyList.map((difficulty) => {
         return (
           <DifficultyRadio
