@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { extract } from "./objectAttributeAccessor.js";
+
 const difficultyList = ["Easy", "Medium", "Hard"];
 const inputList = ["Rows", "Columns", "Mines"];
 
@@ -7,6 +9,20 @@ const inputList = ["Rows", "Columns", "Mines"];
 
 function isNumber(str) {
   return str === "" || /^[0-9\b]+$/.test(str);
+}
+
+function isValidInput(input, inputs) {
+  let { rows, columns, mines } = inputs;
+  switch (input) {
+    case "mines":
+      return 0 <= mines && mines < rows * columns;
+    case "rows":
+      return 0 < rows && rows <= 24;
+    case "columns":
+      return 0 < columns && columns <= 30;
+    default:
+      return false;
+  }
 }
 
 function presets(diff) {
@@ -43,9 +59,9 @@ function updateAnInput(e, inputs, setInputs, lbl) {
 }
 
 function adjustNumber(lbl, inputs, setInputs, change) {
-  let num = inputs.[lbl] // prettier doesn't like it
+  let num = extract(inputs, lbl); //inputs.[lbl] // prettier doesn't like it
   // only proceed if the number will remain positive
-  if (change > 0 || num > 0 ) {
+  if (change > 0 || num > 0) {
     setInputs({ ...inputs, [lbl]: num + change });
   }
 }
@@ -84,7 +100,7 @@ function Input({ input, inputs, setInputs }) {
         type="text"
         id={lbl}
         name={lbl}
-        value={inputs.[lbl]} // prettier doesn't like it
+        value={extract(inputs, lbl)} //{inputs.[lbl]} // prettier doesn't like it
         onChange={(e) => updateAnInput(e, inputs, setInputs, lbl)}
       />
       <button
@@ -93,6 +109,11 @@ function Input({ input, inputs, setInputs }) {
       >
         +
       </button>
+      {isValidInput(lbl, inputs) ? (
+        <span style={{ color: "green" }}>&#10003;</span>
+      ) : (
+        <span style={{ color: "red" }}>&#10007;</span>
+      )}
     </label>
   );
 }
