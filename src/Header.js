@@ -1,5 +1,3 @@
-// TODO: add help pop-up
-
 import { useState } from "react";
 
 import { extract } from "./objectAttributeAccessor.js";
@@ -161,8 +159,12 @@ function Input({ input, inputs, setInputs }) {
       )}
       {input === "Mines" && (
         <div>
-          Mine density:{" "}
-          {Math.round((100 * inputs.mines) / (inputs.rows * inputs.columns))}%
+          <label>Mine density:</label>
+          {inputs.rows > 0 && inputs.columns > 0
+            ? Math.round(
+                (100 * inputs.mines) / (inputs.rows * inputs.columns)
+              ) + "%"
+            : "N/A"}
         </div>
       )}
     </label>
@@ -178,10 +180,13 @@ function Header({ args }) {
 
   return (
     <>
+      {/* directions */}
       <div>Select a standard difficulty, or specify custom parameters.</div>
       <div>
         For a custom game, a mine density between 12% and 20% is recommended.
       </div>
+
+      {/* tandard game options */}
       {difficultyList.map((difficulty) => {
         return (
           <DifficultyRadio
@@ -201,6 +206,7 @@ function Header({ args }) {
         Start Standard Game
       </button>
 
+      {/* custom game inputs */}
       {inputList.map((input) => {
         return (
           <Input
