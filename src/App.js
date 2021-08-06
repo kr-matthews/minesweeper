@@ -11,7 +11,6 @@ function App() {
   // Constants
 
   const [params, setParams] = useState({
-    difficulty: "easy",
     rows: 9,
     columns: 9,
     mines: 10,
@@ -33,10 +32,8 @@ function App() {
   return (
     <>
       <h1>Minesweeper</h1>
-      <Header args={{ params, setParams }} />
+      <Header args={{ params, setParams, setGameState }} />
       <Field args={{ field, setField, gameState, setGameState }} />
-      {params.difficulty}
-      {params.mines}
       <Footer />
     </>
   );

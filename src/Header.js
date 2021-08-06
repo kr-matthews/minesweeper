@@ -81,6 +81,25 @@ function adjustNumber(lbl, inputs, setInputs, change) {
   }
 }
 
+function startCustom(inputs, setParams, setGameState) {
+  let isValid = inputList.every((input) =>
+    isValidInput(input.toLowerCase(), inputs)
+  );
+  if (isValid) {
+    setGameState("uninitialized");
+    // discard difficulty from inputs
+    let { rows, columns, mines } = inputs;
+    let params = { rows, columns, mines };
+    setParams(params);
+  } else {
+    alert('Invalid parameters. However over red "x"s for details.');
+  }
+}
+
+function startStandard(setParams, setGameState) {
+  // TODO:
+}
+
 // function components
 
 function DifficultyRadio({ difficulty, inputs, setInputs }) {
@@ -137,14 +156,14 @@ function Input({ input, inputs, setInputs }) {
 
 // primary component
 
+// TODO: add handlers for standard submit button
 // TODO: display mine density
 // TODO: display suggested mines for custom
-// TODO: add handlers for both submit buttons
 
 function Header({ args }) {
-  let { params, setParams } = args;
+  let { params, setParams, setGameState } = args;
 
-  const [inputs, setInputs] = useState(params);
+  const [inputs, setInputs] = useState({ ...params, difficulty: "easy" });
 
   return (
     <>
@@ -159,7 +178,12 @@ function Header({ args }) {
           />
         );
       })}
-      <button type="button">Start Standard Game</button>
+      <button
+        type="button"
+        onClick={() => startStandard(setParams, setGameState)}
+      >
+        Start Standard Game
+      </button>
 
       {inputList.map((input) => {
         return (
@@ -171,7 +195,12 @@ function Header({ args }) {
           />
         );
       })}
-      <button type="button">Start Custom Game</button>
+      <button
+        type="button"
+        onClick={() => startCustom(inputs, setParams, setGameState)}
+      >
+        Start Custom Game
+      </button>
     </>
   );
 }
