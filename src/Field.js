@@ -2,19 +2,7 @@
 // TODO: redo Cell component to deal with all cases
 // TODO: style cells
 
-function skeletonField(rows, columns) {
-  let new_field = [];
-  for (var i = 0; i < rows; i++) {
-    // create a new row in the field
-    let new_row = [];
-    for (var j = 0; j < columns; j++) {
-      // create a new cell in the row
-      new_row.push({ state: "hide" });
-    }
-    new_field.push(new_row);
-  }
-  return new_field;
-}
+import { skeletonField, generateMines } from "./generateField.js";
 
 function resetField(inputs, setMineCount, setGameState, setField) {
   let { rows, columns, mines } = inputs;
@@ -24,14 +12,14 @@ function resetField(inputs, setMineCount, setGameState, setField) {
   setField(skeletonField(rows, columns));
 }
 
-function generateMines() {
-  // TODO:
-  console.log("I am generating mines.");
-}
-
 function unhideCascade() {
   // TODO:
   console.log("I am doing a cascade.");
+}
+
+function presentWin() {
+  // TODO:
+  console.log("I am presenting a win.");
 }
 
 function presentLoss() {
@@ -39,6 +27,8 @@ function presentLoss() {
   console.log("I am presenting a loss");
 }
 
+// TODO: setup state for revealed squares, then can check if +mineCount=size
+// but be careful about checking game isn't lost
 function won() {
   // TODO:
   console.log("I am checking a potential win.");
@@ -72,6 +62,7 @@ function handleClick(
   // check whether they just won
   if (won(field)) {
     setGameState("won");
+    presentWin(field, setField);
   }
 }
 

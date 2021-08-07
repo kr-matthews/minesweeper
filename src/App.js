@@ -4,7 +4,7 @@ import Header from "./Header.js";
 import Field from "./Field.js";
 import Footer from "./Footer";
 
-import { skeletonField } from "./Field.js";
+import { skeletonField } from "./generateField.js";
 
 import "./index.css";
 import "./field.css";
