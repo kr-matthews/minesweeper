@@ -21,7 +21,7 @@ function App() {
     <>
       <h1>Minesweeper</h1>
       <Header args={{ setMineCount, setGameState, setField }} />
-      <Field args={{ field, setField, gameState, setGameState }} />
+      <Field args={{ mineCount, gameState, setGameState, field, setField }} />
       <Footer />
     </>
   );
