@@ -15,17 +15,17 @@ function App() {
     columns: 9,
     mines: 10,
   });
-
-  const [gameState, setGameState] = useState("uninitialized");
+  const [gameState, setGameState] = useState("reset");
+  // each cell is hasMine (t/f), state (show/hide/flag), adjCount (#)
   const [field, setField] = useState([
     // dummy data for testing
     [
-      [false, 2, "show"],
-      [false, 2, "hide"],
+      { hasMine: false, state: "show", adjCount: 2 },
+      { hasMine: false, state: "hide", adjCount: 2 },
     ],
     [
-      [true, 2, "hide"],
-      [true, 2, "flag"],
+      { hasMine: true, state: "hide", adjCount: 2 },
+      { hasMine: true, state: "flag", adjCount: 2 },
     ],
   ]);
 

@@ -1,6 +1,9 @@
+// TODO: style header
+
 import { useState } from "react";
 
 import { extract } from "./objectAttributeAccessor.js";
+import { resetField } from "./Field.js";
 
 // constants
 
@@ -91,11 +94,11 @@ function startCustom(inputs, setParams, setGameState) {
     isValidInput(input.toLowerCase(), inputs)
   );
   if (isValid) {
-    setGameState("uninitialized");
     // discard difficulty from inputs
     let { rows, columns, mines } = inputs;
     let params = { rows, columns, mines };
     setParams(params);
+    resetField(setGameState);
   } else {
     alert('Invalid parameters. However over red "x"s for details.');
   }
@@ -103,8 +106,8 @@ function startCustom(inputs, setParams, setGameState) {
 
 function startStandard(diff, setParams, setGameState) {
   // based on radio button selection so always valid
-  setGameState("uninitialized");
   setParams(presets(diff));
+  resetField(setGameState);
 }
 
 // function components
@@ -181,12 +184,12 @@ function Header({ args }) {
   return (
     <>
       {/* directions */}
-      <div>Select a standard difficulty, or specify custom parameters.</div>
-      <div>
+      <p>Select a standard difficulty, or specify custom parameters.</p>
+      <p>
         For a custom game, a mine density between 12% and 20% is recommended.
-      </div>
+      </p>
 
-      {/* tandard game options */}
+      {/* standard game options */}
       {difficultyList.map((difficulty) => {
         return (
           <DifficultyRadio

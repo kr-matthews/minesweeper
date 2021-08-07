@@ -1,9 +1,19 @@
+// TODO: initialize board
+// TODO: generate mines on first click
+// TODO: redo Cell component to deal with all cases
+// TODO: add click functionality to Cell
+// TODO: style cells
+
+function resetField(setGameState) {
+  setGameState("reset");
+}
+
 function Cell({ args }) {
-  let { mine, number, state, gameState } = args;
+  let { hasMine, state, adjCount, gameState } = args;
   return (
     // TODO: change classname to not give away mine locations
-    <td className={"cell " + mine + " " + state + " " + gameState}>
-      {state === "show" ? (mine ? "M" : number) : state}
+    <td className={"cell " + hasMine + " " + state + " " + gameState}>
+      {state === "show" ? (hasMine ? "M" : adjCount) : state}
     </td>
   );
 }
@@ -16,13 +26,8 @@ function Field({ args }) {
         {field.map((row, row_ind) => {
           return (
             <tr key={row_ind}>
-              {row.map(([mine, number, state], col_ind) => {
-                return (
-                  <Cell
-                    key={col_ind}
-                    args={{ mine, number, state, gameState }}
-                  />
-                );
+              {row.map((cellData, col_ind) => {
+                return <Cell key={col_ind} args={{ ...cellData, gameState }} />;
               })}
             </tr>
           );
@@ -31,5 +36,7 @@ function Field({ args }) {
     </table>
   );
 }
+
+export { resetField };
 
 export default Field;
