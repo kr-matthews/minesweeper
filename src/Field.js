@@ -4,8 +4,27 @@
 // TODO: add click functionality to Cell
 // TODO: style cells
 
-function resetField(setGameState) {
+function skeletonField(rows, columns) {
+  let new_field = [];
+  for (var i = 0; i < rows; i++) {
+    // create a new row in the field
+    let new_row = [];
+    for (var j = 0; j < columns; j++) {
+      // create a new cell in the row
+      new_row.push({ state: "hide" });
+    }
+    new_field.push(new_row);
+  }
+  return new_field;
+}
+
+function resetField(inputs, setMineCount, setGameState, setField) {
+  let { rows, columns, mines } = inputs;
   setGameState("reset");
+  setMineCount(mines);
+  // create a new field with no data (wait until first click)
+
+  setField(skeletonField(rows, columns));
 }
 
 function Cell({ args }) {
@@ -37,6 +56,6 @@ function Field({ args }) {
   );
 }
 
-export { resetField };
+export { resetField, skeletonField };
 
 export default Field;

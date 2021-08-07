@@ -34,21 +34,21 @@ function isValidInput(inp, inputs) {
 function presets(diff) {
   switch (diff) {
     case "easy":
-      return { rows: 9, cols: 9, mines: 10 };
+      return { rows: 9, columns: 9, mines: 10 };
     case "medium":
-      return { rows: 16, cols: 16, mines: 40 };
+      return { rows: 16, columns: 16, mines: 40 };
     case "hard":
-      return { rows: 16, cols: 30, mines: 99 };
+      return { rows: 16, columns: 30, mines: 99 };
     default:
       // shouldn't happen
-      return { rows: 10, cols: 10, mines: 99 };
+      return { rows: 10, columns: 10, mines: 99 };
   }
 }
 
 function displayDifficulty(difficulty) {
   let diff = difficulty.toLowerCase();
-  let { rows, cols, mines } = presets(diff);
-  return diff + ": " + rows + "x" + cols + ", " + mines + " mines";
+  let { rows, columns, mines } = presets(diff);
+  return diff + ": " + rows + "x" + columns + ", " + mines + " mines";
 }
 
 function tooltip(inp) {
@@ -89,25 +89,22 @@ function adjustNumber(inp, inputs, setInputs, change) {
   }
 }
 
-function startCustom(inputs, setParams, setGameState) {
+function startCustom(inputs, setMineCount, setGameState, setField) {
   let isValid = inputList.every((input) =>
     isValidInput(input.toLowerCase(), inputs)
   );
   if (isValid) {
     // discard difficulty from inputs
-    let { rows, columns, mines } = inputs;
-    let params = { rows, columns, mines };
-    setParams(params);
-    resetField(setGameState);
+    resetField(inputs, setMineCount, setGameState, setField);
   } else {
     alert('Invalid parameters. However over red "x"s for details.');
   }
 }
 
-function startStandard(diff, setParams, setGameState) {
+function startStandard(diff, setMineCount, setGameState, setField) {
   // based on radio button selection so always valid
-  setParams(presets(diff));
-  resetField(setGameState);
+  let inputs = presets(diff);
+  resetField(inputs, setMineCount, setGameState, setField);
 }
 
 // function components
@@ -177,9 +174,14 @@ function Input({ input, inputs, setInputs }) {
 // primary component
 
 function Header({ args }) {
-  let { params, setParams, setGameState } = args;
+  let { setMineCount, setGameState, setField } = args;
 
-  const [inputs, setInputs] = useState({ ...params, difficulty: "easy" });
+  const [inputs, setInputs] = useState({
+    rows: 9,
+    columns: 9,
+    mines: 10,
+    difficulty: "easy",
+  });
 
   return (
     <>
@@ -203,7 +205,7 @@ function Header({ args }) {
       <button
         type="button"
         onClick={() =>
-          startStandard(inputs.difficulty, setParams, setGameState)
+          startStandard(inputs.difficulty, setMineCount, setGameState, setField)
         }
       >
         Start Standard Game
@@ -222,7 +224,9 @@ function Header({ args }) {
       })}
       <button
         type="button"
-        onClick={() => startCustom(inputs, setParams, setGameState)}
+        onClick={() =>
+          startCustom(inputs, setMineCount, setGameState, setField)
+        }
       >
         Start Custom Game
       </button>
