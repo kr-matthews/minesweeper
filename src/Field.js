@@ -36,24 +36,24 @@ function won() {
 }
 
 function handleClick(
-  row_ind,
-  col_ind,
+  rowInd,
+  colInd,
   mineCount,
   gameState,
   setGameState,
   field,
   setField
 ) {
-  let cell = field[row_ind][col_ind];
+  let cell = field[rowInd][colInd];
   // generate the mines if this is the first click
   if (gameState === "reset") {
     setGameState("ongoing");
-    generateMines(row_ind, col_ind, mineCount, field, setField);
+    generateMines(rowInd, colInd, mineCount, field, setField);
   }
   // reveal current cell, and recurse or trigger loss
   if (cell.state === "hide" && !cell.hasMine) {
     // reveal cell, and recurse on any neighbours with 0 adj mines
-    unhideCascade([[row_ind, col_ind]], field, setField);
+    unhideCascade([[rowInd, colInd]], field, setField);
   } else if (cell.state === "hide" && cell.hasMine) {
     // just lost
     setGameState("lost");
@@ -70,8 +70,8 @@ function handleClick(
 // won't act like a button sometimes
 function Cell({ args }) {
   let {
-    row_ind,
-    col_ind,
+    rowInd,
+    colInd,
     hasMine,
     state,
     adjCount,
@@ -88,8 +88,8 @@ function Cell({ args }) {
         className="clickable todo"
         onClick={() =>
           handleClick(
-            row_ind,
-            col_ind,
+            rowInd,
+            colInd,
             mineCount,
             gameState,
             setGameState,
@@ -98,7 +98,8 @@ function Cell({ args }) {
           )
         }
       >
-        {state === "show" ? (hasMine ? "M" : adjCount) : state}
+        {/* TEMP: should be "show" not "hide" */}
+        {state === "hide" ? (hasMine ? "M" : adjCount) : state}
       </button>
     </td>
   );
@@ -109,17 +110,17 @@ function Field({ args }) {
   return (
     <table className="field">
       <tbody>
-        {field.map((row, row_ind) => {
+        {field.map((row, rowInd) => {
           return (
-            <tr key={row_ind}>
-              {row.map((cellData, col_ind) => {
+            <tr key={rowInd}>
+              {row.map((cellData, colInd) => {
                 return (
                   <Cell
-                    key={col_ind}
+                    key={colInd}
                     args={{
                       ...cellData,
-                      row_ind,
-                      col_ind,
+                      rowInd,
+                      colInd,
                       mineCount,
                       gameState,
                       setGameState,

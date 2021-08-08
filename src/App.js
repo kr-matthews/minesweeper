@@ -9,6 +9,8 @@ import { skeletonField } from "./generateField.js";
 import "./index.css";
 import "./field.css";
 
+// TODO: remove all console logs
+
 function App() {
   // Constants
 
