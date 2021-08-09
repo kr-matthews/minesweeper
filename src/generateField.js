@@ -12,57 +12,63 @@ function skeletonField(rows, columns) {
   return newField;
 }
 
-// conceptually: put all the mines in the first n cells
-//  and then shuffle the field by, one at a time, swapping each cell
-//  with a random cell after it
-// but also: make sure no mine in the clicked cell
+// add mine locations to field, plus adj counts, given first click location
+//  (no mine on clicked cell)
 function generateMines(rowInd, colInd, mineCount, field, setField) {
   console.log("I am generating mines.");
-  // place mines in first mineCount cells
-  placeMinesAtStart(rowInd, colInd, mineCount, field, setField);
-  shuffleMines(rowInd, colInd, mineCount, field, setField);
+
+  // generate shuffled array of field size - 1 with mineCount mines
+  let arr = generateShuffledMineArray(
+    field.length * field[0].length - 1,
+    mineCount
+  );
+  // insert mine-free spot corresponding to clicked cell location
+  insertNonMine(arr, rowInd * field[0].length + colInd);
+  // add mines to field
+  mineArrayToField(arr, field, setField);
+  // use array to place mines in actual field
   assignAdjCounts();
+  alert(
+    "It only generates the random mine locations, you can't continue from here."
+  );
 }
 
-// put them in the first mineCount spots, but not [rowInd, colInd]
-function placeMinesAtStart(rowInd, colInd, mineCount, field, setField) {
-  let minesLeft = mineCount;
-  let [r, c] = [0, 0];
-  while (minesLeft > 0) {
-    if (!(r === rowInd && c === colInd)) {
-      // place mine
-      let newField = [...field];
-      newField[r][c].hasMine = true;
-      setField(newField);
-      minesLeft -= 1;
+function generateShuffledMineArray(len, mines) {
+  let arr = [];
+  // create sorted array with mines...
+  for (let i = 0; i < len; i++) {
+    if (i < mines) {
+      arr.push(true);
+    } else {
+      arr.push(false);
     }
-    // advance
-    [r, c] = updateIndices(r, c, field[0].length);
   }
+  // ... and then shuffle it
+  return shuffle(arr);
 }
 
-// shuffle, but don't allow [rowInd, colInd] to get a mine
-function shuffleMines(rowInd, colInd, mineCount, field, setField) {
-  let [r, c] = [0, 0];
-  while (r < field[0].length) {
-    let [rSwap, cSwap] = getRandomLaterIndices(
-      r,
-      c,
-      field.length,
-      field[0].length,
-      rowInd,
-      colInd
-    );
-    // do the swap
-    let newField = [...field];
-    [newField[r][c].hasMine, newField[rSwap][cSwap].hasMine] = [
-      newField[rSwap][cSwap].hasMine,
-      newField[r][c].hasMine,
-    ];
-    setField(newField);
-    // advance
-    [r, c] = updateIndices(r, c, field[0].length);
+function shuffle(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    let swap_i = getRandomInt(i, arr.length - 1);
+    [arr[i], arr[swap_i]] = [arr[swap_i], arr[i]];
   }
+  return arr;
+}
+
+function insertNonMine(arr, ind) {
+  arr.splice(ind, 0, false);
+  return arr; // for testing
+}
+
+function mineArrayToField(arr, field, setField) {
+  let newField = [...field];
+  for (let r = 0; r < field.length; r++) {
+    for (let c = 0; c < field[0].length; c++) {
+      newField[r][c].hasMine = arr[r * field[0].length + c];
+    }
+  }
+  setField(newField);
+  return field; // for testing
 }
 
 function assignAdjCounts() {
@@ -77,21 +83,7 @@ function updateIndices(r, c, n) {
   }
 }
 
-// avoid returning r0, c0
-// unless r, c = r0, c0
-function getRandomLaterIndices(r, c, n, m, r0, c0) {
-  if (r === r0 && c === c0) {
-    return [r, c];
-  }
-  let natInd = r * m + c;
-  let forbiddenInt = r0 * m + c0;
-  var randomLaterNatInd;
-  do {
-    randomLaterNatInd = getRandomInt(natInd, n * m - 1);
-  } while (randomLaterNatInd === forbiddenInt);
-  return [Math.floor(randomLaterNatInd / m), randomLaterNatInd % m];
-}
-
+// inclusive of end-points
 function getRandomInt(lower, upper) {
   return Math.floor(Math.random() * (upper - lower + 1)) + lower;
 }
@@ -100,4 +92,4 @@ export { skeletonField, generateMines };
 
 // for testing
 
-export { updateIndices };
+export { updateIndices, insertNonMine };
