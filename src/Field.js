@@ -1,4 +1,3 @@
-// TODO: unfinished function definitions tagged with todo
 // TODO: redo Cell component to deal with all cases
 // TODO: style cells
 
@@ -8,10 +7,17 @@ import {
   getNeighbours,
 } from "./generateField.js";
 
-function resetField(inputs, setMineCount, setGameState, setField) {
+function resetField(
+  inputs,
+  setMineCount,
+  setRevealCount,
+  setGameState,
+  setField
+) {
   let { rows, columns, mines } = inputs;
   setGameState("reset");
   setMineCount(mines);
+  setRevealCount(0);
   // create a new field with no data (wait until first click)
   setField(skeletonField(rows, columns));
 }
@@ -19,37 +25,34 @@ function resetField(inputs, setMineCount, setGameState, setField) {
 // have stack of hidden, non-mine cells
 // reveal each, and if adjCount is 0, add all neighbours to stack
 function cascadeReveal(stack, setRevealCount, field, setField) {
-  let newField = [...field];
   while (stack.length > 0) {
     let [r, c] = stack.pop();
-    // reveal it
-    newField[r][c].state = "show";
-    setRevealCount((revealCount) => revealCount + 1);
-    // if it's adjCount is 0, add neighbours to stack (unless alreadt seen)
-    if (field[r][c].adjCount === 0) {
-      getNeighbours(r, c, field.length, field[0].length).forEach(([r0, c0]) => {
-        if (newField[r0][c0].state === "hide") {
-          stack.push([r0, c0]);
-        }
-      });
+    // otherwise already processed it earlier in the stack
+    if (field[r][c].state === "hide") {
+      // reveal it
+      let newField = [...field];
+      newField[r][c].state = "show";
+      setField(newField);
+      // update revealCount
+      setRevealCount((revealCount) => revealCount + 1);
+      // if it's adjCount is 0, add hidden neighbours to stack
+      if (field[r][c].adjCount === 0) {
+        getNeighbours(r, c, field.length, field[0].length).forEach(
+          ([r0, c0]) => {
+            if (field[r0][c0].state === "hide") {
+              stack.push([r0, c0]);
+            }
+          }
+        );
+      }
     }
   }
-}
-
-// TODO: setup state for revealed squares, then can check if +mineCount=size
-// but be careful about checking game isn't lost
-function won(mineCount, revealCount, gameState, field) {
-  return (
-    gameState === "ongoing" &&
-    revealCount + mineCount === field.length * field[0].length
-  );
 }
 
 function handleClick(
   rowInd,
   colInd,
   mineCount,
-  revealCount,
   setRevealCount,
   gameState,
   setGameState,
@@ -62,19 +65,18 @@ function handleClick(
     setGameState("ongoing");
     generateMines(rowInd, colInd, mineCount, field, setField);
   }
+  // now reveal the cell and perform other actions as necessary
   if (cell.hasMine) {
-    // just lost: reveal current cell, and  trigger loss
+    // just lost: reveal current cell...
     let newField = [...field];
     newField[rowInd][colInd].state = "show";
     setField(newField);
+    // ... and  trigger loss
     setGameState("lost");
-  } else if (cell.state === "hide" && !cell.hasMine) {
-    // reveal cell, and recurse on any neighbours with 0 adj mines
+  } else if (cell.state === "hide") {
+    // no mine: reveal cell, and iterate on any neighbours with 0 adj mines
     cascadeReveal([[rowInd, colInd]], setRevealCount, field, setField);
-  }
-  // check whether they just won
-  if (won(mineCount, revealCount, gameState, field)) {
-    setGameState("won");
+    // there is a useEffect to check when the game is won
   }
 }
 
@@ -85,7 +87,6 @@ function Cell({ args }) {
     rowInd,
     colInd,
     hasMine,
-    revealCount,
     setRevealCount,
     state,
     adjCount,
@@ -105,7 +106,6 @@ function Cell({ args }) {
             rowInd,
             colInd,
             mineCount,
-            revealCount,
             setRevealCount,
             gameState,
             setGameState,
@@ -124,7 +124,6 @@ function Cell({ args }) {
 function Field({ args }) {
   let {
     mineCount,
-    revealCount,
     setRevealCount,
     gameState,
     setGameState,
@@ -146,7 +145,6 @@ function Field({ args }) {
                       rowInd,
                       colInd,
                       mineCount,
-                      revealCount,
                       setRevealCount,
                       gameState,
                       setGameState,
