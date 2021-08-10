@@ -100,8 +100,8 @@ function getRandomInt(lower, upper) {
   return Math.floor(Math.random() * (upper - lower + 1)) + lower;
 }
 
-export { skeletonField, generateMines };
+export { skeletonField, generateMines, getNeighbours };
 
 // testing
 
-export { getNeighbours };
+//export { getNeighbours };

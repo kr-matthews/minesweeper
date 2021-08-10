@@ -4,10 +4,11 @@
 
 import Rules from "./Rules.js";
 
-function Footer() {
+function Footer({ args }) {
+  let { gameState } = args;
   return (
     <>
-      {/* rules pop-up */}
+      <p>The game is {gameState}.</p>
       <Rules />
     </>
   );
