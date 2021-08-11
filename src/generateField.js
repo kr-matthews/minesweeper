@@ -23,22 +23,35 @@ function skeletonField(rows, columns) {
   return newField;
 }
 
+// TODO: improve comments for this function
 // add mine locations and adj counts to field, given first click location
-//  (no mine on clicked cell)
+//  (clicked cell should be a 0 if possible)
 function generateMines(rowInd, colInd, mineCount, field, setField) {
-  // generate shuffled array of field size - 1 with mineCount mines
-  let arr = generateShuffledMineArray(
-    field.length * field[0].length - 1,
-    mineCount
+  let [m, n] = [field.length, field[0].length];
+  let cellCount = m * n;
+  let adjCellCount = getNeighbours(rowInd, colInd, m, n).length;
+  let excessMines = Math.max(0, mineCount - (cellCount - (adjCellCount + 1)));
+  // generate shuffled array for mine locations of non-adjacent cells
+  let nonClickAdjArr = generateShuffledMineArray(
+    cellCount - (adjCellCount + 1),
+    mineCount - excessMines
   );
-  // insert mine-free spot corresponding to clicked cell location
-  insertNonMine(arr, rowInd * field[0].length + colInd);
+  // generate shuffled array for mine locations of adjacent cells
+  let clickAdjArr = generateShuffledMineArray(adjCellCount, excessMines);
   // add mines to actual field state
-  mineArrayToField(arr, field, setField);
+  mineArraysToField(
+    rowInd,
+    colInd,
+    nonClickAdjArr,
+    clickAdjArr,
+    field,
+    setField
+  );
   // assign arj counts based on newly placed mines
   assignAdjCounts(field, setField);
 }
 
+// shuffled array of length len with max(mines,len) mines
 function generateShuffledMineArray(len, mines) {
   let arr = [];
   // create sorted array with mines...
@@ -61,18 +74,33 @@ function shuffle(arr) {
   return arr;
 }
 
-function insertNonMine(arr, ind) {
-  arr.splice(ind, 0, false);
-}
-
-function mineArrayToField(arr, field, setField) {
+function mineArraysToField(
+  rowInd,
+  colInd,
+  nonClickAdjArr,
+  clickAdjArr,
+  field,
+  setField
+) {
   let newField = [...field];
   for (let r = 0; r < field.length; r++) {
     for (let c = 0; c < field[0].length; c++) {
-      newField[r][c].hasMine = arr[r * field[0].length + c];
+      if (r === rowInd && c === colInd) {
+        newField[r][c].hasMine = false;
+      } else if (isNeighbour(r, c, rowInd, colInd)) {
+        newField[r][c].hasMine = clickAdjArr.pop();
+      } else {
+        newField[r][c].hasMine = nonClickAdjArr.pop();
+      }
     }
   }
   setField(newField);
+}
+
+function isNeighbour(r, c, r0, c0) {
+  let d1 = Math.abs(r - r0);
+  let d2 = Math.abs(c - c0);
+  return d1 <= 1 && d2 <= 1 && d1 + d2 > 0;
 }
 
 function assignAdjCounts(field, setField) {

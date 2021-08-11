@@ -116,6 +116,7 @@ function Cell({ args }) {
       >
         {/* TEMP: should be "show" not "hide" */}
         {state === "show" ? (hasMine ? "M" : adjCount) : state}
+        {/* hasMine ? "M" : adjCount */}
       </button>
     </td>
   );
