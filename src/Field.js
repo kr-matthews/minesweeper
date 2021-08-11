@@ -49,9 +49,9 @@ function cascadeReveal(stack, setRevealCount, field, setField) {
   }
 }
 
-function handleClick(
-  rowInd,
-  colInd,
+function handleLeftClick(
+  r,
+  c,
   mineCount,
   setRevealCount,
   gameState,
@@ -59,24 +59,43 @@ function handleClick(
   field,
   setField
 ) {
-  let cell = field[rowInd][colInd];
+  let cell = field[r][c];
   // generate the mines if this is the first click
-  if (gameState === "reset") {
+  if (cell.state === "hide" && gameState === "reset") {
     setGameState("ongoing");
-    generateMines(rowInd, colInd, mineCount, field, setField);
+    generateMines(r, c, mineCount, field, setField);
   }
   // now reveal the cell and perform other actions as necessary
-  if (cell.hasMine) {
+  if (cell.state === "hide" && cell.hasMine) {
     // just lost: reveal current cell...
     let newField = [...field];
-    newField[rowInd][colInd].state = "show";
+    newField[r][c].state = "show";
     setField(newField);
     // ... and  trigger loss
     setGameState("lost");
   } else if (cell.state === "hide") {
     // no mine: reveal cell, and iterate on any neighbours with 0 adj mines
-    cascadeReveal([[rowInd, colInd]], setRevealCount, field, setField);
+    cascadeReveal([[r, c]], setRevealCount, field, setField);
     // there is a useEffect to check when the game is won
+  }
+}
+
+function handleRightClick(e, r, c, field, setField) {
+  // TODO:
+  e.preventDefault();
+  let cell = field[r][c];
+  if (cell.state === "hide") {
+    setField((prev) => {
+      let newField = [...prev];
+      newField[r][c].state = "flag";
+      return newField;
+    });
+  } else if (cell.state === "flag") {
+    setField((prev) => {
+      let newField = [...prev];
+      newField[r][c].state = "hide";
+      return newField;
+    });
   }
 }
 
@@ -102,7 +121,7 @@ function Cell({ args }) {
         type="button"
         className="clickable todo"
         onClick={() =>
-          handleClick(
+          handleLeftClick(
             rowInd,
             colInd,
             mineCount,
@@ -112,6 +131,9 @@ function Cell({ args }) {
             field,
             setField
           )
+        }
+        onContextMenu={(e) =>
+          handleRightClick(e, rowInd, colInd, field, setField)
         }
       >
         {/* TEMP: should be "show" not "hide" */}
