@@ -1,4 +1,3 @@
-// TODO: redo Cell component to deal with all cases
 // TODO: style cells
 
 import {
@@ -6,6 +5,11 @@ import {
   generateMines,
   getNeighbours,
 } from "./generateField.js";
+
+const flagImage = "FL";
+const hiddenMine = "M";
+const flaggedMine = "FM";
+const clickedMine = "oops";
 
 function resetField(
   inputs,
@@ -152,6 +156,57 @@ function handleRightClick(e, r, c, gameState, field, setField) {
   }
 }
 
+function cellDisplay(hasMine, state, adjCount, gameState) {
+  if (gameState === "reset" || gameState === "ongoing") {
+    switch (state) {
+      case "hide":
+        return "";
+      case "show":
+        return adjCount;
+      case "flag":
+        return flagImage;
+      default:
+        return "Error!";
+    }
+  } else if (gameState === "won") {
+    if (!hasMine) {
+      return adjCount;
+    } else if (state === "hide") {
+      return hiddenMine;
+    } else {
+      //state === "flag"
+      return flaggedMine;
+    }
+  } else if (gameState === "lost") {
+    if (hasMine) {
+      switch (state) {
+        case "hide":
+          return hiddenMine;
+        case "show":
+          return clickedMine;
+        case "flag":
+          return flaggedMine;
+        default:
+          return "Error!";
+      }
+    } else {
+      switch (state) {
+        case "hide":
+          return "";
+        case "show":
+          return adjCount;
+        case "flag":
+          return flagImage;
+        default:
+          return "Error!";
+      }
+    }
+  }
+
+  //state === "show" && (hasMine ? "M" : adjCount)
+  //state === "flag" && "!!!!"
+}
+
 // always return a button, style it differently based on classname
 // won't act like a button sometimes
 function Cell({ args }) {
@@ -189,10 +244,7 @@ function Cell({ args }) {
           handleRightClick(e, rowInd, colInd, gameState, field, setField)
         }
       >
-        {/* TEMP: should be "show" not "hide" */}
-        {state === "show" && (hasMine ? "M" : adjCount)}
-        {state === "flag" && "!!!!"}
-        {/* hasMine ? "M" : adjCount */}
+        {cellDisplay(hasMine, state, adjCount, gameState)}
       </button>
     </td>
   );
