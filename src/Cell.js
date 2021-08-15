@@ -7,10 +7,15 @@ import {
   revealNonFlagNeighbours,
 } from "./Field.js";
 
-const flagImage = "FL";
-const hiddenMine = "M";
-const flaggedMine = "FM";
-const clickedMine = "!!!";
+import flagImage from "./images/flag.svg";
+import hiddenMineImage from "./images/mine.svg";
+import flaggedMineImage from "./images/flagged-mine.svg";
+import clickedMineImage from "./images/clicked-mine.svg";
+
+const flag = <img src={flagImage} alt="F" />;
+const hiddenMine = <img src={hiddenMineImage} alt="M" />;
+const flaggedMine = <img src={flaggedMineImage} alt="FM" />;
+const clickedMine = <img src={clickedMineImage} alt="!!!" />;
 
 function cellDisplay(hasMine, state, adjCount, gameState) {
   if (gameState === "reset" || gameState === "ongoing") {
@@ -20,7 +25,7 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
       case "show":
         return adjCount;
       case "flag":
-        return flagImage;
+        return flag;
       default:
         return "Error!";
     }
@@ -52,7 +57,7 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
         case "show":
           return adjCount;
         case "flag":
-          return flagImage;
+          return flag;
         default:
           return "Error!";
       }
