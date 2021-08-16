@@ -1,4 +1,6 @@
-// TODO: style cells
+// create cell.css (or rename field)
+// TODO: define cellClass
+// TODO: add css for cells based on cellClass
 
 import {
   generateMines,
@@ -63,6 +65,11 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
       }
     }
   }
+}
+
+function cellClass(hasMine, state, adjCount, gameState) {
+  // TODO:
+  return "clickable";
 }
 
 function handleLeftClick(
@@ -152,7 +159,7 @@ function Cell({ args }) {
     <td className="cell">
       <button
         type="button"
-        className="clickable todo"
+        className={cellClass(hasMine, state, adjCount, gameState)}
         onClick={() =>
           handleLeftClick(
             rowInd,
