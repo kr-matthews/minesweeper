@@ -68,8 +68,21 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
 }
 
 function cellClass(hasMine, state, adjCount, gameState) {
-  // TODO:
-  return "clickable";
+  if (state === "show") {
+    // nothing is clickable once game is over
+    return "cell";
+  }
+  return "cell hidden";
+}
+
+function buttonClass(hasMine, state, adjCount, gameState) {
+  if (gameState === "won" || gameState === "lost") {
+    // nothing is clickable once game is over
+    return "";
+  }
+  if (state === "hide") {
+    return "clickable";
+  }
 }
 
 function handleLeftClick(
@@ -156,10 +169,10 @@ function Cell({ args }) {
     setField,
   } = args;
   return (
-    <td className="cell">
+    <td className={cellClass(hasMine, state, adjCount, gameState)}>
       <button
         type="button"
-        className={cellClass(hasMine, state, adjCount, gameState)}
+        className={buttonClass(hasMine, state, adjCount, gameState)}
         onClick={() =>
           handleLeftClick(
             rowInd,
