@@ -34,7 +34,11 @@ function Rules() {
 
   return (
     <>
-      <button type="button" onClick={() => setIsOpen(!isOpen)}>
+      <button
+        type="button"
+        className="rules"
+        onClick={() => setIsOpen(!isOpen)}
+      >
         {isOpen ? "Hide Rules" : "Show Rules"}
       </button>
       {isOpen && <RulesText />}
