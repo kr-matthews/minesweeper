@@ -22,3 +22,39 @@
   cursor: pointer;
   background-color: LightGrey;
 }
+
+._0 {
+  color: transparent;
+}
+
+._1 {
+  color: rgb(0, 0, 250);
+}
+
+._2 {
+  color: rgb(75, 128, 45);
+}
+
+._3 {
+  color: rgb(219, 19, 0);
+}
+
+._4 {
+  color: rgb(32, 32, 129);
+}
+
+._5 {
+  color: rgb(105, 4, 0);
+}
+
+._6 {
+  color: rgb(69, 122, 122);
+}
+
+._7 {
+  color: Black;
+}
+
+._8 {
+  color: Grey;
+}

@@ -74,11 +74,12 @@ function cellClass(hasMine, state, adjCount, gameState) {
 function buttonClass(hasMine, state, adjCount, gameState) {
   if (gameState === "won" || gameState === "lost") {
     // nothing is clickable once game is over
-    return "";
+    return "_" + adjCount.toString();
   }
   if (state === "hide") {
     return "clickable";
   }
+  return "_" + adjCount.toString();
 }
 
 function handleLeftClick(
