@@ -93,6 +93,7 @@ function startCustom(
   inputs,
   setMineCount,
   setRevealCount,
+  setFlagCount,
   setGameState,
   setField
 ) {
@@ -101,7 +102,14 @@ function startCustom(
   );
   if (isValid) {
     // discard difficulty from inputs
-    resetField(inputs, setMineCount, setRevealCount, setGameState, setField);
+    resetField(
+      inputs,
+      setMineCount,
+      setRevealCount,
+      setFlagCount,
+      setGameState,
+      setField
+    );
   } else {
     alert('Invalid parameters. However over red "x"s for details.');
   }
@@ -111,12 +119,20 @@ function startStandard(
   diff,
   setMineCount,
   setRevealCount,
+  setFlagCount,
   setGameState,
   setField
 ) {
   // based on radio button selection so always valid
   let inputs = presets(diff);
-  resetField(inputs, setMineCount, setRevealCount, setGameState, setField);
+  resetField(
+    inputs,
+    setMineCount,
+    setRevealCount,
+    setFlagCount,
+    setGameState,
+    setField
+  );
 }
 
 // function components
@@ -186,7 +202,13 @@ function Input({ input, inputs, setInputs }) {
 // primary component
 
 function Header({ args }) {
-  let { setMineCount, setRevealCount, setGameState, setField } = args;
+  let {
+    setMineCount,
+    setRevealCount,
+    setFlagCount,
+    setGameState,
+    setField,
+  } = args;
 
   const [inputs, setInputs] = useState({
     rows: 9,
@@ -221,6 +243,7 @@ function Header({ args }) {
             inputs.difficulty,
             setMineCount,
             setRevealCount,
+            setFlagCount,
             setGameState,
             setField
           )
@@ -250,6 +273,7 @@ function Header({ args }) {
             inputs,
             setMineCount,
             setRevealCount,
+            setFlagCount,
             setGameState,
             setField
           )

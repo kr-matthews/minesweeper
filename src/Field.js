@@ -10,6 +10,7 @@ function resetField(
   inputs,
   setMineCount,
   setRevealCount,
+  setFlagCount,
   setGameState,
   setField
 ) {
@@ -17,6 +18,7 @@ function resetField(
   setGameState("reset");
   setMineCount(mines);
   setRevealCount(0);
+  setFlagCount(0);
   // create a new field with no data (wait until first click)
   setField(skeletonField(rows, columns));
 }
@@ -88,6 +90,7 @@ function Field({ args }) {
   let {
     mineCount,
     setRevealCount,
+    setFlagCount,
     gameState,
     setGameState,
     field,
@@ -109,6 +112,7 @@ function Field({ args }) {
                       colInd,
                       mineCount,
                       setRevealCount,
+                      setFlagCount,
                       gameState,
                       setGameState,
                       field,

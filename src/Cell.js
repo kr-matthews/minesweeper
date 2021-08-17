@@ -127,7 +127,7 @@ function handleLeftClick(
   }
 }
 
-function handleRightClick(e, r, c, gameState, field, setField) {
+function handleRightClick(e, r, c, gameState, setFlagCount, field, setField) {
   e.preventDefault();
   // don't do anything if the game is over
   if (gameState === "won" || gameState === "lost") {
@@ -140,12 +140,14 @@ function handleRightClick(e, r, c, gameState, field, setField) {
       newField[r][c].state = "flag";
       return newField;
     });
+    setFlagCount((prev) => prev + 1);
   } else if (cell.state === "flag") {
     setField((prev) => {
       let newField = [...prev];
       newField[r][c].state = "hide";
       return newField;
     });
+    setFlagCount((prev) => prev - 1);
   }
 }
 
@@ -157,6 +159,7 @@ function Cell({ args }) {
     colInd,
     hasMine,
     setRevealCount,
+    setFlagCount,
     state,
     adjCount,
     mineCount,
@@ -183,7 +186,15 @@ function Cell({ args }) {
           )
         }
         onContextMenu={(e) =>
-          handleRightClick(e, rowInd, colInd, gameState, field, setField)
+          handleRightClick(
+            e,
+            rowInd,
+            colInd,
+            gameState,
+            setFlagCount,
+            field,
+            setField
+          )
         }
       >
         {cellDisplay(hasMine, state, adjCount, gameState)}

@@ -13,9 +13,12 @@ import "./cell.css";
 function App() {
   // Constants
 
+  // how many mines the field has
   const [mineCount, setMineCount] = useState(10);
   // how many non-mine cells have been revealed
   const [revealCount, setRevealCount] = useState(0);
+  // how many flags are currently placed
+  const [flagCount, setFlagCount] = useState(0);
   // reset, ongoing, won, lost
   const [gameState, setGameState] = useState("reset");
   // each cell is hasMine (t/f), state (show/hide/flag), adjCount (#)
@@ -35,7 +38,15 @@ function App() {
   return (
     <>
       <h1>Minesweeper</h1>
-      <Header args={{ setMineCount, setRevealCount, setGameState, setField }} />
+      <Header
+        args={{
+          setMineCount,
+          setRevealCount,
+          setFlagCount,
+          setGameState,
+          setField,
+        }}
+      />
       <Field
         args={{
           mineCount,
@@ -44,9 +55,10 @@ function App() {
           field,
           setField,
           setRevealCount,
+          setFlagCount,
         }}
       />
-      <Footer args={{ gameState }} />
+      <Footer args={{ gameState, flagCount }} />
     </>
   );
 }

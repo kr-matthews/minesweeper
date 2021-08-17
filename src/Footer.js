@@ -1,4 +1,3 @@
-// TODO: add flag count display (or mineCount - flagCount really)
 // TODO: add links to related: https://pwmarcz.pl/kaboom/ and https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mines.html
 // TODO: timer, if not too difficulty
 // TODO: high-scores, if local storage is easy
@@ -16,13 +15,18 @@ function message(gameState) {
       return "Congratulations, you won!";
     case "lost":
       return "Uh oh, you uncovered a mine. You lost.";
+    default:
+      return "You found an error!";
   }
 }
 
 function Footer({ args }) {
-  let { gameState } = args;
+  let { gameState, flagCount } = args;
   return (
     <>
+      <p>
+        Flags: <span className="fixed-width-span">{flagCount}</span>
+      </p>
       <p>{message(gameState)}</p>
       <Rules />
     </>

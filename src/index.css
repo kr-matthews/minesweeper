@@ -35,3 +35,9 @@ code {
 .toolcontainer:hover .tooltip {
   visibility: visible;
 }
+
+.fixed-width-span {
+  display: inline-block;
+  text-align: right;
+  width: 2em;
+}
