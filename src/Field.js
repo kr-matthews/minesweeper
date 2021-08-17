@@ -1,4 +1,5 @@
 import Cell from "./Cell.js";
+
 import {
   skeletonField,
   generateMines,

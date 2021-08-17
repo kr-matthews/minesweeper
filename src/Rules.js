@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// TODO: actual rules text
 function RulesText() {
   return (
     <div>

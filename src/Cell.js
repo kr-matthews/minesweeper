@@ -1,7 +1,3 @@
-// create cell.css (or rename field)
-// TODO: define cellClass
-// TODO: add css for cells based on cellClass
-
 import {
   generateMines,
   cascadeReveal,

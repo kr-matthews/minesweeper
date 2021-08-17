@@ -4,28 +4,3 @@
   margin-left: auto;
   margin-right: auto;
 }
-
-.cell {
-  border: solid 2px;
-  text-align: center;
-  width: 2em;
-  height: 2em;
-}
-
-.cell button {
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  border: none;
-  font-weight: bold;
-  font-size: large;
-}
-
-.cell.hidden {
-  background-color: Darkgrey;
-}
-
-.clickable:hover {
-  cursor: pointer;
-  background-color: LightGrey;
-}

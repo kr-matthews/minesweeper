@@ -8,6 +8,7 @@ import { skeletonField } from "./generateField.js";
 
 import "./index.css";
 import "./field.css";
+import "./cell.css";
 
 function App() {
   // Constants
