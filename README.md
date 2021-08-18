@@ -1,15 +1,17 @@
 # Minesweeper
 
-**This is a work in progress.**
-
 ### Play
 
 [https://kr-matthews.github.io/minesweeper/](https://kr-matthews.github.io/minesweeper/)
 
 ### Features
 
-Classic minesweeper game where you can select a standard field dimension and bomb count, or input custom parameters.
+Classic minesweeper game where you can select a standard field dimension and mine count, or input custom parameters.
 
-Mines are randomly distributed after the first cell click, and will never be in that first cell.
+Includes flags, and you can click uncovered cells with the correct number of adjacent flags to auto-uncover all non-flagged neighbours.
 
-Possibly including a timer and ability to save high-scores.
+Mines are randomly distributed after the first (left) click, and the first-clicked cell will have no adjacent mines whenever possible (and if not possible, then it will have minimal possible adjacency count).
+
+### Future
+
+Possibly including a timer and ability to save high-scores in the future.
