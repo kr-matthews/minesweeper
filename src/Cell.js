@@ -90,7 +90,9 @@ function handleLeftClick(
   gameState,
   setGameState,
   field,
-  setField
+  setField,
+  handleStart,
+  handleStop
 ) {
   // don't do anything if the game is over
   if (gameState === "won" || gameState === "lost") {
@@ -101,6 +103,7 @@ function handleLeftClick(
   if (gameState === "reset" && cell.state === "hide") {
     setGameState("ongoing");
     generateMines(r, c, mineCount, field, setField);
+    handleStart();
   }
   // now gameState is ongoing
   // now reveal the cell and perform other actions as necessary
@@ -111,6 +114,7 @@ function handleLeftClick(
     setField(newField);
     // ... and  trigger loss
     setGameState("lost");
+    handleStop();
   } else if (cell.state === "hide") {
     // no mine: reveal cell, and iterate on any neighbours with 0 adj mines
     cascadeReveal([[r, c]], setRevealCount, setGameState, field, setField);
@@ -167,6 +171,8 @@ function Cell({ args }) {
     setGameState,
     field,
     setField,
+    handleStart,
+    handleStop,
   } = args;
   return (
     <td className={cellClass(hasMine, state, adjCount, gameState)}>
@@ -182,7 +188,9 @@ function Cell({ args }) {
             gameState,
             setGameState,
             field,
-            setField
+            setField,
+            handleStart,
+            handleStop
           )
         }
         onContextMenu={(e) =>

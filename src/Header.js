@@ -105,7 +105,8 @@ function startCustom(
   setRevealCount,
   setFlagCount,
   setGameState,
-  setField
+  setField,
+  handleReset
 ) {
   let isValid = inputList.every((input) =>
     isValidInput(input.toLowerCase(), inputs)
@@ -118,7 +119,8 @@ function startCustom(
       setRevealCount,
       setFlagCount,
       setGameState,
-      setField
+      setField,
+      handleReset
     );
   } else {
     alert('Invalid parameters. However over red "x"s for details.');
@@ -131,7 +133,8 @@ function startStandard(
   setRevealCount,
   setFlagCount,
   setGameState,
-  setField
+  setField,
+  handleReset
 ) {
   // based on radio button selection so always valid
   let inputs = presets(diff);
@@ -141,7 +144,8 @@ function startStandard(
     setRevealCount,
     setFlagCount,
     setGameState,
-    setField
+    setField,
+    handleReset
   );
 }
 
@@ -213,6 +217,7 @@ function Header({ args }) {
     setFlagCount,
     setGameState,
     setField,
+    handleReset,
   } = args;
 
   const [inputs, setInputs] = useState({
@@ -249,7 +254,8 @@ function Header({ args }) {
                 setRevealCount,
                 setFlagCount,
                 setGameState,
-                setField
+                setField,
+                handleReset
               )
             }
           >
@@ -281,7 +287,8 @@ function Header({ args }) {
                 setRevealCount,
                 setFlagCount,
                 setGameState,
-                setField
+                setField,
+                handleReset
               )
             }
           >

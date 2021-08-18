@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import useTimer from "./Timer.js";
+
 import Header from "./Header.js";
 import Field from "./Field.js";
 import Footer from "./Footer";
@@ -25,6 +27,8 @@ function App() {
   const [gameState, setGameState] = useState("reset");
   // each cell is hasMine (t/f), state (show/hide/flag), adjCount (#)
   const [field, setField] = useState(skeletonField(9, 9));
+  // time how long it takes to solve
+  let { time, handleStart, handleStop, handleReset } = useTimer();
 
   // effects
 
@@ -32,8 +36,9 @@ function App() {
   useEffect(() => {
     if (revealCount + mineCount === field.length * field[0].length) {
       setGameState("won");
+      handleStop();
     }
-  }, [revealCount, mineCount, field]);
+  }, [revealCount, mineCount, field, handleStop]);
 
   // return
 
@@ -47,6 +52,7 @@ function App() {
           setFlagCount,
           setGameState,
           setField,
+          handleReset,
         }}
       />
       <Field
@@ -58,9 +64,11 @@ function App() {
           setField,
           setRevealCount,
           setFlagCount,
+          handleStart,
+          handleStop,
         }}
       />
-      <Footer args={{ gameState, flagCount }} />
+      <Footer args={{ time, gameState, flagCount }} />
     </>
   );
 }

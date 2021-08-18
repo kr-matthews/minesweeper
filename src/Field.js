@@ -12,13 +12,15 @@ function resetField(
   setRevealCount,
   setFlagCount,
   setGameState,
-  setField
+  setField,
+  handleReset
 ) {
   let { rows, columns, mines } = inputs;
   setGameState("reset");
   setMineCount(mines);
   setRevealCount(0);
   setFlagCount(0);
+  handleReset();
   // create a new field with no data (wait until first click)
   setField(skeletonField(rows, columns));
 }
@@ -95,6 +97,8 @@ function Field({ args }) {
     setGameState,
     field,
     setField,
+    handleStart,
+    handleStop,
   } = args;
   return (
     <table className="field">
@@ -117,6 +121,8 @@ function Field({ args }) {
                       setGameState,
                       field,
                       setField,
+                      handleStart,
+                      handleStop,
                     }}
                   />
                 );
