@@ -4,6 +4,12 @@
   width: 2em;
 }
 
-.rules {
+.rules-button {
   margin: 1em;
+}
+
+.rules {
+  max-width: 40em;
+
+  margin: auto;
 }

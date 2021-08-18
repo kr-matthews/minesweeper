@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function RulesText() {
   return (
-    <div>
+    <div className="rules">
       <h4>Rules</h4>
       <p>
         All cells start covered. Certain cells have mines hidden underneath
@@ -28,6 +28,26 @@ function RulesText() {
       <p>
         For a custom game, a mine density between 12% and 20% is recommended.
       </p>
+      <p>
+        If you like minesweeper, consider{" "}
+        <a
+          href="https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mines.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          this superior implementation
+        </a>{" "}
+        which guarantees you will never need to guess, and{" "}
+        <a
+          href="https://pwmarcz.pl/kaboom/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          this neat variation
+        </a>{" "}
+        which always penalizes a guess, unless guessing is necessary in which
+        case any guess will be fine.
+      </p>
     </div>
   );
 }
@@ -39,7 +59,7 @@ function Rules() {
     <>
       <button
         type="button"
-        className="rules"
+        className="rules-button"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? "Hide Rules" : "Show Rules"}

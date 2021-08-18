@@ -1,4 +1,3 @@
-// TODO: add links to related: https://pwmarcz.pl/kaboom/ and https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/mines.html
 // TODO: high-scores, if local storage is easy
 
 import Rules from "./Rules.js";
