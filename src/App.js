@@ -7,8 +7,10 @@ import Footer from "./Footer";
 import { skeletonField } from "./generateField.js";
 
 import "./index.css";
+import "./header.css";
 import "./field.css";
 import "./cell.css";
+import "./footer.css";
 
 function App() {
   // Constants

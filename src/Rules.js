@@ -3,7 +3,7 @@ import { useState } from "react";
 function RulesText() {
   return (
     <div>
-      <h3>Rules</h3>
+      <h4>Rules</h4>
       <p>
         All cells start covered. Certain cells have mines hidden underneath
         them. The goal is to uncover all the cells without mines. If you uncover
@@ -24,6 +24,9 @@ function RulesText() {
         If you click an aready-uncovered cell and it's number matches the number
         of adjacent flags, all other adjecent cells will be uncovered. This can
         save you some clicks, but isn't necessary.
+      </p>
+      <p>
+        For a custom game, a mine density between 12% and 20% is recommended.
       </p>
     </div>
   );

@@ -11,8 +11,6 @@
   margin: 0;
 }
 
-/* TODO: fix shrinking width on small screen */
-
 .cell button {
   width: 100%;
   height: 100%;

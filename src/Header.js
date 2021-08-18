@@ -1,5 +1,3 @@
-// TODO: style header
-
 import { useState } from "react";
 
 import { extract } from "./objectAttributeAccessor.js";
@@ -48,7 +46,19 @@ function presets(diff) {
 function displayDifficulty(difficulty) {
   let diff = difficulty.toLowerCase();
   let { rows, columns, mines } = presets(diff);
-  return diff + ": " + rows + "x" + columns + ", " + mines + " mines";
+  return rows + "x" + columns + ", " + mines + " mines";
+}
+
+function displayMineDensity(inputs) {
+  return (
+    <div className="density">
+      Mine density:{" "}
+      {inputs.rows > 0 && inputs.columns > 0
+        ? Math.round((100 * inputs.mines) / (inputs.rows * inputs.columns)) +
+          "%"
+        : "N/A"}
+    </div>
+  );
 }
 
 function tooltip(inp) {
@@ -140,7 +150,7 @@ function startStandard(
 function DifficultyRadio({ difficulty, inputs, setInputs }) {
   let diff = difficulty.toLowerCase();
   return (
-    <>
+    <div className="radio">
       <input
         type="radio"
         id={diff}
@@ -149,53 +159,48 @@ function DifficultyRadio({ difficulty, inputs, setInputs }) {
         checked={inputs.difficulty === diff}
         onChange={(e) => updateDifficulty(e, inputs, setInputs)}
       />
-      <label htmlFor={diff}>{displayDifficulty(difficulty)}</label>
-    </>
+      <label htmlFor={diff}>
+        <div className="diff">{difficulty + ":"}</div>
+        <div className="desc">{displayDifficulty(difficulty)}</div>
+      </label>
+    </div>
   );
 }
 
 function Input({ input, inputs, setInputs }) {
   let inp = input.toLowerCase();
   return (
-    <label htmlFor={inp}>
-      {input}:
-      <button
-        type="button"
-        onClick={() => adjustNumber(inp, inputs, setInputs, -1)}
-      >
-        -
-      </button>
-      <input
-        type="text"
-        id={inp}
-        name={inp}
-        value={extract(inputs, inp)} //{inputs.[inp]} // prettier doesn't like it
-        onChange={(e) => updateAnInput(e, inputs, setInputs, inp)}
-      />
-      <button
-        type="button"
-        onClick={() => adjustNumber(inp, inputs, setInputs, 1)}
-      >
-        +
-      </button>
-      {isValidInput(inp, inputs) ? (
-        <span style={{ color: "green" }}>&#10003;</span>
-      ) : (
-        <span className="toolcontainer" style={{ color: "red" }}>
-          &#10007;<span className="tooltip">{tooltip(inp)}</span>
-        </span>
-      )}
-      {input === "Mines" && (
-        <div>
-          <label>Mine density:</label>
-          {inputs.rows > 0 && inputs.columns > 0
-            ? Math.round(
-                (100 * inputs.mines) / (inputs.rows * inputs.columns)
-              ) + "%"
-            : "N/A"}
-        </div>
-      )}
-    </label>
+    <>
+      <div className="input">
+        <label htmlFor={inp}>{input}:</label>
+        <button
+          type="button"
+          onClick={() => adjustNumber(inp, inputs, setInputs, -1)}
+        >
+          -
+        </button>
+        <input
+          type="text"
+          id={inp}
+          name={inp}
+          value={extract(inputs, inp)} //{inputs.[inp]} // prettier doesn't like it
+          onChange={(e) => updateAnInput(e, inputs, setInputs, inp)}
+        />
+        <button
+          type="button"
+          onClick={() => adjustNumber(inp, inputs, setInputs, 1)}
+        >
+          +
+        </button>
+        {isValidInput(inp, inputs) ? (
+          <span style={{ color: "green" }}>&#10003;</span>
+        ) : (
+          <span className="toolcontainer" style={{ color: "red" }}>
+            &#10007;<span className="tooltip">{tooltip(inp)}</span>
+          </span>
+        )}
+      </div>
+    </>
   );
 }
 
@@ -219,68 +224,71 @@ function Header({ args }) {
 
   return (
     <>
-      {/* directions */}
-      <p>Select a standard difficulty, or specify custom parameters.</p>
-      <p>
-        For a custom game, a mine density between 12% and 20% is recommended.
-      </p>
-
       {/* standard game options */}
-      {difficultyList.map((difficulty) => {
-        return (
-          <DifficultyRadio
-            key={difficulty}
-            difficulty={difficulty}
-            inputs={inputs}
-            setInputs={setInputs}
-          />
-        );
-      })}
-      <button
-        type="button"
-        onClick={() =>
-          startStandard(
-            inputs.difficulty,
-            setMineCount,
-            setRevealCount,
-            setFlagCount,
-            setGameState,
-            setField
-          )
-        }
-      >
-        Start Standard Game
-      </button>
+      <div className="options">
+        <div className="option">
+          <h4>Standard Game</h4>
+          {difficultyList.map((difficulty) => {
+            return (
+              <DifficultyRadio
+                key={difficulty}
+                difficulty={difficulty}
+                inputs={inputs}
+                setInputs={setInputs}
+              />
+            );
+          })}
+          {displayMineDensity(presets(inputs.difficulty))}
+          <button
+            type="button"
+            className="start"
+            onClick={() =>
+              startStandard(
+                inputs.difficulty,
+                setMineCount,
+                setRevealCount,
+                setFlagCount,
+                setGameState,
+                setField
+              )
+            }
+          >
+            Start Standard Game
+          </button>
+        </div>
 
-      {/* // TEMP: */}
-      <br />
-
-      {/* custom game inputs */}
-      {inputList.map((input) => {
-        return (
-          <Input
-            key={input}
-            input={input}
-            inputs={inputs}
-            setInputs={setInputs}
-          />
-        );
-      })}
-      <button
-        type="button"
-        onClick={() =>
-          startCustom(
-            inputs,
-            setMineCount,
-            setRevealCount,
-            setFlagCount,
-            setGameState,
-            setField
-          )
-        }
-      >
-        Start Custom Game
-      </button>
+        {/* custom game inputs */}
+        <div className="option">
+          <h4>Custom Game</h4>
+          {inputList.map((input) => {
+            return (
+              <Input
+                key={input}
+                input={input}
+                inputs={inputs}
+                setInputs={setInputs}
+              />
+            );
+          })}
+          {displayMineDensity(inputs)}
+          <button
+            type="button"
+            className="start"
+            onClick={() =>
+              startCustom(
+                inputs,
+                setMineCount,
+                setRevealCount,
+                setFlagCount,
+                setGameState,
+                setField
+              )
+            }
+          >
+            Start Custom Game
+          </button>
+        </div>
+      </div>
     </>
   );
 }
