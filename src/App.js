@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
-import useTimer from "./Timer.js";
+import useTimer from "./useTimer.js";
+import useHighScores from "./useHighScores.js";
 
 import Header from "./Header.js";
 import Field from "./Field.js";
@@ -29,6 +30,10 @@ function App() {
   const [field, setField] = useState(skeletonField(9, 9));
   // time how long it takes to solve
   const { time, handleStart, handleStop, handleReset } = useTimer();
+  // storage for high-scores
+  const { getHighScore, updateHighScore } = useHighScores();
+
+  let highScore = getHighScore(field.length, field[0].length, mineCount);
 
   // effects
 
@@ -37,8 +42,9 @@ function App() {
     if (revealCount + mineCount === field.length * field[0].length) {
       setGameState("won");
       handleStop();
+      updateHighScore(field.length, field[0].length, mineCount, time);
     }
-  }, [revealCount, mineCount, field, handleStop]);
+  }, [revealCount, mineCount, field, handleStop, updateHighScore, time]);
 
   // return
 
@@ -68,7 +74,7 @@ function App() {
           handleStop,
         }}
       />
-      <Footer args={{ time, gameState, flagCount }} />
+      <Footer args={{ time, highScore, gameState, flagCount }} />
     </>
   );
 }
