@@ -28,7 +28,14 @@ function resetField(
 // have stack of cells (any state and any hasMine)
 // reveal if hidden;
 // and if it isn't a mine and adjCount is 0, then add all neighbours to stack
-function cascadeReveal(stack, setRevealCount, setGameState, field, setField) {
+function cascadeReveal(
+  stack,
+  setRevealCount,
+  setGameState,
+  field,
+  setField,
+  handleStop
+) {
   while (stack.length > 0) {
     let [r, c] = stack.pop();
     // otherwise already processed it earlier in the stack
@@ -40,6 +47,7 @@ function cascadeReveal(stack, setRevealCount, setGameState, field, setField) {
       if (field[r][c].hasMine) {
         // ... and  trigger loss
         setGameState("lost");
+        handleStop();
       } else {
         // update revealCount
         setRevealCount((revealCount) => revealCount + 1);
@@ -65,7 +73,8 @@ function revealNonFlagNeighbours(
   setRevealCount,
   setGameState,
   field,
-  setField
+  setField,
+  handleStop
 ) {
   let [m, n] = [field.length, field[0].length];
   cascadeReveal(
@@ -73,7 +82,8 @@ function revealNonFlagNeighbours(
     setRevealCount,
     setGameState,
     field,
-    setField
+    setField,
+    handleStop
   );
 }
 

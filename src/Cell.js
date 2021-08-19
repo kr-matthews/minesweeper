@@ -117,7 +117,14 @@ function handleLeftClick(
     handleStop();
   } else if (cell.state === "hide") {
     // no mine: reveal cell, and iterate on any neighbours with 0 adj mines
-    cascadeReveal([[r, c]], setRevealCount, setGameState, field, setField);
+    cascadeReveal(
+      [[r, c]],
+      setRevealCount,
+      setGameState,
+      field,
+      setField,
+      handleStop
+    );
     // there is a useEffect to check when the game is won
   } else if (cell.state === "show" && hasFullFlags(r, c, field)) {
     revealNonFlagNeighbours(
@@ -126,7 +133,8 @@ function handleLeftClick(
       setRevealCount,
       setGameState,
       field,
-      setField
+      setField,
+      handleStop
     );
   }
 }
