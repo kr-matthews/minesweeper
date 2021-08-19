@@ -8,11 +8,11 @@ import Footer from "./Footer";
 
 import { skeletonField } from "./generateField.js";
 
-import "./index.css";
-import "./header.css";
-import "./field.css";
-import "./cell.css";
-import "./footer.css";
+import "./css/index.css";
+import "./css/header.css";
+import "./css/field.css";
+import "./css/cell.css";
+import "./css/footer.css";
 
 function App() {
   // Constants
@@ -28,7 +28,7 @@ function App() {
   // each cell is hasMine (t/f), state (show/hide/flag), adjCount (#)
   const [field, setField] = useState(skeletonField(9, 9));
   // time how long it takes to solve
-  let { time, handleStart, handleStop, handleReset } = useTimer();
+  const { time, handleStart, handleStop, handleReset } = useTimer();
 
   // effects
 
