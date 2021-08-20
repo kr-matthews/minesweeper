@@ -13,14 +13,14 @@ function useTimer() {
   }
 
   function handleStop() {
-    setState("stopped");
     clearInterval(intRef.current);
+    setState("stopped");
   }
 
   function handleReset() {
-    setState("reset");
     clearInterval(intRef.current);
     setTime(0);
+    setState("reset");
   }
 
   return { time, state, handleStart, handleStop, handleReset };
