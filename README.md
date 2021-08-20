@@ -12,6 +12,8 @@ Includes flags, and you can click uncovered cells with the correct number of adj
 
 Mines are randomly distributed after the first (left) click, and the first-clicked cell will have no adjacent mines whenever possible (and if not possible, then it will have minimal possible adjacency count).
 
-### Future
+There is a timer, and high-scores are tracked using localStorage.
 
-Possibly including a timer and ability to save high-scores in the future.
+### Flaws
+
+useState is over-relied on; many instances should be replaced by useReducer. Some logic should be wrapped into custom hooks (as the timer is). There is way too much prop-drilling.
