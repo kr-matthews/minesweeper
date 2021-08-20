@@ -30,7 +30,17 @@ function convertTime(milliseconds) {
 }
 
 function Footer({ args }) {
-  let { time, highScore, gameState, flagCount } = args;
+  let {
+    m,
+    n,
+    time,
+    highScore,
+    gameState,
+    mineCount,
+    flagCount,
+    resetHighScore,
+    resetHighScores,
+  } = args;
   let [currentSeconds, currentDecimal] = convertTime(time);
   let [highScoreSeconds, highScoreDecimal] = convertTime(highScore);
   let isHighScore = time === highScore;
@@ -58,6 +68,14 @@ function Footer({ args }) {
         </span>
       </p>
       <p>{message(gameState, isHighScore)}</p>
+      <div className="resets">
+        <button type="button" onClick={() => resetHighScore(m, n, mineCount)}>
+          Reset this high score
+        </button>
+        <button type="button" onClick={resetHighScores}>
+          Reset all high scores
+        </button>
+      </div>
       <Rules />
     </>
   );

@@ -31,7 +31,12 @@ function App() {
   // time how long it takes to solve
   const { time, handleStart, handleStop, handleReset } = useTimer();
   // storage for high-scores
-  const { getHighScore, updateHighScore } = useHighScores();
+  const {
+    getHighScore,
+    updateHighScore,
+    resetHighScore,
+    resetHighScores,
+  } = useHighScores();
 
   const highScore = getHighScore(field.length, field[0].length, mineCount);
 
@@ -45,6 +50,7 @@ function App() {
     ) {
       setGameState("won");
       handleStop();
+      // PROBLEM: highscore is sometimes .01 below final time
       updateHighScore(field.length, field[0].length, mineCount, time);
     }
   }, [
@@ -85,7 +91,19 @@ function App() {
           handleStop,
         }}
       />
-      <Footer args={{ time, highScore, gameState, flagCount }} />
+      <Footer
+        args={{
+          m: field.length,
+          n: field[0].length,
+          time,
+          highScore,
+          gameState,
+          mineCount,
+          flagCount,
+          resetHighScore,
+          resetHighScores,
+        }}
+      />
     </>
   );
 }

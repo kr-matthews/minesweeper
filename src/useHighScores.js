@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+// should this use useReducer instead of useState?
+
 function useHighScores() {
   const [highScores, setHighScores] = useState(
     JSON.parse(localStorage.getItem("HS")) || {}
@@ -24,9 +26,22 @@ function useHighScores() {
     localStorage.setItem("HS", JSON.stringify(newHighScores));
   }
 
-  // TODO: resetHighScore (just one, or all)
+  // TODO: add confirmtion box to avoid accidental clicks
 
-  return { getHighScore, updateHighScore };
+  function resetHighScores() {
+    setHighScores({});
+    localStorage.setItem("HS", JSON.stringify({}));
+  }
+
+  function resetHighScore(rows, cols, mines) {
+    let name = makeName(rows, cols, mines);
+    let newHighScores = { ...highScores };
+    delete newHighScores[name];
+    setHighScores(newHighScores);
+    localStorage.setItem("HS", JSON.stringify(newHighScores));
+  }
+
+  return { getHighScore, updateHighScore, resetHighScore, resetHighScores };
 }
 
 export default useHighScores;

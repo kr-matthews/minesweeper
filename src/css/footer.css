@@ -20,6 +20,10 @@
   width: 2em;
 }
 
+.resets button {
+  margin: 0 1em;
+}
+
 .rules-button {
   margin: 1em;
 }
