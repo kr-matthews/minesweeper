@@ -33,18 +33,29 @@ function App() {
   // storage for high-scores
   const { getHighScore, updateHighScore } = useHighScores();
 
-  let highScore = getHighScore(field.length, field[0].length, mineCount);
+  const highScore = getHighScore(field.length, field[0].length, mineCount);
 
   // effects
 
   // check whether game is won
   useEffect(() => {
-    if (revealCount + mineCount === field.length * field[0].length) {
+    if (
+      gameState === "ongoing" &&
+      revealCount + mineCount === field.length * field[0].length
+    ) {
       setGameState("won");
       handleStop();
       updateHighScore(field.length, field[0].length, mineCount, time);
     }
-  }, [revealCount, mineCount, field, handleStop, updateHighScore, time]);
+  }, [
+    revealCount,
+    mineCount,
+    field,
+    handleStop,
+    gameState,
+    updateHighScore,
+    time,
+  ]);
 
   // return
 

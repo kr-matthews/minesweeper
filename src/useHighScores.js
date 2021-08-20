@@ -1,26 +1,30 @@
+import { useState } from "react";
+
 function useHighScores() {
+  const [highScores, setHighScores] = useState(
+    JSON.parse(localStorage.getItem("HS")) || {}
+  );
+
   function makeName(rows, cols, mines) {
     return rows + "-" + cols + "-" + mines;
   }
 
-  function getHighScores() {
-    return JSON.parse(localStorage.getItem("HS")) || {};
-  }
-
   function getHighScore(rows, cols, mines) {
-    let highScores = getHighScores();
     let name = makeName(rows, cols, mines);
-    return highScores[name] || Number.POSITIVE_INFINITY;
+    let score = highScores[name];
+    return score === undefined ? Number.POSITIVE_INFINITY : score;
   }
 
   function updateHighScore(rows, cols, mines, score) {
     let name = makeName(rows, cols, mines);
-    let oldHighScores = getHighScores();
     let oldHighScore = getHighScore(rows, cols, mines);
     let newHighScore = Math.min(oldHighScore, score);
-    let newHighScores = { ...oldHighScores, [name]: newHighScore };
+    let newHighScores = { ...highScores, [name]: newHighScore };
+    setHighScores(newHighScores);
     localStorage.setItem("HS", JSON.stringify(newHighScores));
   }
+
+  // TODO: resetHighScore (just one, or all)
 
   return { getHighScore, updateHighScore };
 }

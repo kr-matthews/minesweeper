@@ -1,16 +1,15 @@
-// TODO: show xy.zw time on stop, say whether it's a new high-score in message
-// TODO: restyle footer to line up displays and allow .zw smoothly
-
 import Rules from "./Rules.js";
 
-function message(gameState) {
+function message(gameState, newHighScore) {
   switch (gameState) {
     case "reset":
       return "The field is reset. Click anywhere to begin.";
     case "ongoing":
       return "The game is in progress.";
     case "won":
-      return "Congratulations, you won!";
+      return newHighScore
+        ? "Congratulations, you set a high score!"
+        : "Congratulations, you won!";
     case "lost":
       return "Uh oh, you uncovered a mine. You lost.";
     default:
@@ -18,25 +17,47 @@ function message(gameState) {
   }
 }
 
+// return strings, decimal to two digits
+function convertTime(milliseconds) {
+  if (milliseconds === Number.POSITIVE_INFINITY) {
+    return ["N/A", ""];
+  }
+  let seconds = Math.floor(milliseconds / 1000);
+  let secondsString = seconds.toString();
+  let decimal = (milliseconds % 1000) / 10;
+  let decimalString = decimal < 10 ? "0" + decimal : decimal.toString();
+  return [secondsString, decimalString];
+}
+
 function Footer({ args }) {
   let { time, highScore, gameState, flagCount } = args;
-  let currentSeconds = Math.floor(time / 1000);
-  let highScoreSeconds =
-    highScore === Number.POSITIVE_INFINITY
-      ? "N/A"
-      : Math.floor(highScore / 1000);
+  let [currentSeconds, currentDecimal] = convertTime(time);
+  let [highScoreSeconds, highScoreDecimal] = convertTime(highScore);
+  let newHighScore = time === highScore ? time : false;
   return (
     <>
-      <p>
-        Flags: <span className="fixed-width-span">{flagCount}</span>
+      <p className="stat">
+        <span className="name">Flags: </span>
+        <span className="value">{flagCount}</span>
+        <span className="decimal"></span>
       </p>
-      <p>
-        Time: <span className="fixed-width-span">{currentSeconds}</span>
+      <p className="stat">
+        <span className="name">Time: </span>
+        <span className="value">{currentSeconds}</span>
+        <span className="decimal">
+          {gameState === "won" || gameState === "lost"
+            ? "." + currentDecimal
+            : ""}
+        </span>
       </p>
-      <p>
-        High-Score: <span className="fixed-width-span">{highScoreSeconds}</span>
+      <p className="stat">
+        <span className="name">High Score: </span>
+        <span className="value">{highScoreSeconds}</span>
+        <span className="decimal">
+          {highScoreDecimal && "." + highScoreDecimal}
+        </span>
       </p>
-      <p>{message(gameState)}</p>
+      <p>{message(gameState, newHighScore)}</p>
       <Rules />
     </>
   );
