@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import { extract } from "./objectAttributeAccessor.js";
 import { resetField } from "./Field.js";
 
 // constants
@@ -92,7 +91,7 @@ function updateAnInput(e, inputs, setInputs, inp) {
 }
 
 function adjustNumber(inp, inputs, setInputs, change) {
-  let num = extract(inputs, inp); //inputs.[inp] // prettier doesn't like it
+  let num = inputs[inp];
   // only proceed if the number will remain positive
   if (change > 0 || num > 0) {
     setInputs({ ...inputs, [inp]: num + change });
@@ -187,7 +186,7 @@ function Input({ input, inputs, setInputs }) {
           type="text"
           id={inp}
           name={inp}
-          value={extract(inputs, inp)} //{inputs.[inp]} // prettier doesn't like it
+          value={inputs[inp]}
           onChange={(e) => updateAnInput(e, inputs, setInputs, inp)}
         />
         <button
