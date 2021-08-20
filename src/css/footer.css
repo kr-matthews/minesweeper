@@ -1,3 +1,7 @@
+.stat {
+  margin: 0.4em;
+}
+
 .stat .name {
   display: inline-block;
   text-align: right;

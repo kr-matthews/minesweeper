@@ -1,13 +1,13 @@
 import Rules from "./Rules.js";
 
-function message(gameState, newHighScore) {
+function message(gameState, isHighScore) {
   switch (gameState) {
     case "reset":
       return "The field is reset. Click anywhere to begin.";
     case "ongoing":
       return "The game is in progress.";
     case "won":
-      return newHighScore
+      return isHighScore
         ? "Congratulations, you set a high score!"
         : "Congratulations, you won!";
     case "lost":
@@ -33,7 +33,7 @@ function Footer({ args }) {
   let { time, highScore, gameState, flagCount } = args;
   let [currentSeconds, currentDecimal] = convertTime(time);
   let [highScoreSeconds, highScoreDecimal] = convertTime(highScore);
-  let newHighScore = time === highScore ? time : false;
+  let isHighScore = time === highScore;
   return (
     <>
       <p className="stat">
@@ -57,7 +57,7 @@ function Footer({ args }) {
           {highScoreDecimal && "." + highScoreDecimal}
         </span>
       </p>
-      <p>{message(gameState, newHighScore)}</p>
+      <p>{message(gameState, isHighScore)}</p>
       <Rules />
     </>
   );
