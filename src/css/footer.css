@@ -26,6 +26,10 @@
   margin: 0 0.5em;
 }
 
+.resets input {
+  width: 5em;
+}
+
 .rules-button {
   margin: 1em;
 }
