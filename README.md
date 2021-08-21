@@ -16,4 +16,7 @@ There is a timer, and high-scores are tracked using localStorage.
 
 ### Flaws
 
-useState is over-relied on; many instances should be replaced by useReducer. Some logic should be wrapped into custom hooks (as the timer is). There is way too much prop-drilling.
+useState is over-relied on; many instances should be replaced by useReducer.
+Some logic should be wrapped into custom hooks (as the timer is).
+There is way too much prop-drilling.
+The timer pauses when the window isn't active.

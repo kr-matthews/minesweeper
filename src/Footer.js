@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+import ConfirmAndAct from "./ConfirmAndAct.js";
 import Rules from "./Rules.js";
 
 function message(gameState, isHighScore) {
@@ -41,6 +44,7 @@ function Footer({ args }) {
     resetHighScore,
     resetHighScores,
   } = args;
+  let [reset, setReset] = useState("");
   let [currentSeconds, currentDecimal] = convertTime(time);
   let [highScoreSeconds, highScoreDecimal] = convertTime(highScore);
   let isHighScore = time === highScore;
@@ -68,14 +72,30 @@ function Footer({ args }) {
         </span>
       </p>
       <p>{message(gameState, isHighScore)}</p>
-      <div className="resets">
-        <button type="button" onClick={() => resetHighScore(m, n, mineCount)}>
-          Reset this high score
-        </button>
-        <button type="button" onClick={resetHighScores}>
-          Reset all high scores
-        </button>
-      </div>
+      {reset === "" && (
+        <div className="resets">
+          <button type="button" onClick={() => setReset("one")}>
+            Reset this high score
+          </button>
+          <button type="button" onClick={() => setReset("all")}>
+            Reset all high scores
+          </button>
+        </div>
+      )}
+      {reset === "one" && (
+        <ConfirmAndAct
+          txt="reset one"
+          action={() => resetHighScore(m, n, mineCount)}
+          setReset={setReset}
+        />
+      )}
+      {reset === "all" && (
+        <ConfirmAndAct
+          txt="reset all"
+          action={resetHighScores}
+          setReset={setReset}
+        />
+      )}
       <Rules />
     </>
   );

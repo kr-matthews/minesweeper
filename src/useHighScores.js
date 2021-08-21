@@ -26,8 +26,6 @@ function useHighScores() {
     localStorage.setItem("HS", JSON.stringify(newHighScores));
   }
 
-  // TODO: add confirmtion box to avoid accidental clicks
-
   function resetHighScores() {
     setHighScores({});
     localStorage.setItem("HS", JSON.stringify({}));

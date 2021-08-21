@@ -20,8 +20,10 @@
   width: 2em;
 }
 
-.resets button {
-  margin: 0 1em;
+.resets button,
+.resets label,
+.resets input {
+  margin: 0 0.5em;
 }
 
 .rules-button {

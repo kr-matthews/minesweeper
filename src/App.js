@@ -15,6 +15,8 @@ import "./css/field.css";
 import "./css/cell.css";
 import "./css/footer.css";
 
+// TODO: create favicon
+
 function App() {
   // Constants
 
