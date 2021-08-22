@@ -2,6 +2,9 @@ import { useState } from "react";
 
 import { resetField } from "./Field.js";
 
+import flag from "./images/flag.svg";
+import questionMark from "./images/question-mark.svg";
+
 // constants
 
 const difficultyList = ["Easy", "Medium", "Hard"];
@@ -217,6 +220,10 @@ function Header({ args }) {
     setGameState,
     setField,
     handleReset,
+    usingQs,
+    setUsingQs,
+    usingWarnings,
+    setUsingWarnings,
   } = args;
 
   const [inputs, setInputs] = useState({
@@ -228,6 +235,35 @@ function Header({ args }) {
 
   return (
     <>
+      {/* options */}
+      <h4>Options</h4>
+      <span className="option">
+        <input
+          type="checkbox"
+          id="usingQs"
+          name="usingQs"
+          value={true}
+          checked={usingQs}
+          onChange={() => setUsingQs((prev) => !prev)}
+        />
+        {/* // TODO: insert image of ? */}
+        <label htmlFor="usingQs">
+          Use <img className="sml-img" src={questionMark} alt="'?'" /> in
+          addition to <img className="sml-img" src={flag} alt="flag" />
+        </label>
+      </span>
+      <span className="option">
+        <input
+          type="checkbox"
+          id="usingWarnings"
+          name="usingWarnings"
+          value={true}
+          checked={usingWarnings}
+          onChange={() => setUsingWarnings((prev) => !prev)}
+        />
+        <label htmlFor="usingWarnings">Highlight flag surpluses</label>
+      </span>
+
       {/* standard game options */}
       <div className="options">
         <div className="option">

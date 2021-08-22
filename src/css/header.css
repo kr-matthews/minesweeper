@@ -56,3 +56,13 @@
 .toolcontainer:hover .tooltip {
   visibility: visible;
 }
+
+.option {
+  margin: 0 0.5em;
+}
+
+.sml-img {
+  background-color: DarkGrey;
+  height: 0.7em;
+  padding: 0.15em;
+}

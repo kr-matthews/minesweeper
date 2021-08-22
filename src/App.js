@@ -37,8 +37,12 @@ function App() {
     resetHighScore,
     resetHighScores,
   } = useHighScores();
-
+  // high-score for current field
   const highScore = getHighScore(field.length, field[0].length, mineCount);
+  // using "?"s in addition to flags
+  const [usingQs, setUsingQs] = useState(false);
+  // highlight cells with too many adj falgs?
+  const [usingWarnings, setUsingWarnings] = useState(false);
 
   // effects
 
@@ -76,6 +80,10 @@ function App() {
           setGameState,
           setField,
           handleReset,
+          usingQs,
+          setUsingQs,
+          usingWarnings,
+          setUsingWarnings,
         }}
       />
       <Field
