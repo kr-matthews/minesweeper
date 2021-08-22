@@ -88,13 +88,12 @@ function revealNonFlagNeighbours(
 }
 
 // check if adj flag count is equal to adj mine count
-function hasFullFlags(r, c, field) {
+function adjFlagSurplus(r, c, field) {
   let [m, n] = [field.length, field[0].length];
   return (
-    field[r][c].adjCount ===
     getNeighbours(r, c, m, n).filter(([r0, c0]) => {
       return field[r0][c0].state === "flag";
-    }).length
+    }).length - field[r][c].adjCount
   );
 }
 
@@ -109,6 +108,8 @@ function Field({ args }) {
     setField,
     handleStart,
     handleStop,
+    usingQs,
+    usingWarnings,
   } = args;
   return (
     <table className="field">
@@ -133,6 +134,7 @@ function Field({ args }) {
                       setField,
                       handleStart,
                       handleStop,
+                      usingWarnings,
                     }}
                   />
                 );
@@ -148,6 +150,11 @@ function Field({ args }) {
 export { resetField, skeletonField };
 
 // for Cell.js
-export { generateMines, cascadeReveal, hasFullFlags, revealNonFlagNeighbours };
+export {
+  generateMines,
+  cascadeReveal,
+  adjFlagSurplus,
+  revealNonFlagNeighbours,
+};
 
 export default Field;

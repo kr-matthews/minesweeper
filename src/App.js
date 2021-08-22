@@ -97,6 +97,8 @@ function App() {
           setFlagCount,
           handleStart,
           handleStop,
+          usingQs,
+          usingWarnings,
         }}
       />
       <Footer

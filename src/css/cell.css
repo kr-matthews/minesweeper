@@ -29,6 +29,10 @@
   background-color: Darkgrey;
 }
 
+.cell.surplus {
+  background-color: LightPink;
+}
+
 .clickable:hover {
   cursor: pointer;
   background-color: LightGrey;

@@ -1,7 +1,7 @@
 import {
   generateMines,
   cascadeReveal,
-  hasFullFlags,
+  adjFlagSurplus,
   revealNonFlagNeighbours,
 } from "./Field.js";
 
@@ -63,7 +63,17 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
   }
 }
 
-function cellClass(hasMine, state, adjCount, gameState) {
+function cellClass(
+  hasMine,
+  state,
+  adjCount,
+  gameState,
+  usingWarnings,
+  surplus
+) {
+  if (state === "show" && !hasMine && usingWarnings && surplus > 0) {
+    return "cell surplus";
+  }
   if (state === "show") {
     // nothing is clickable once game is over
     return "cell";
@@ -126,7 +136,7 @@ function handleLeftClick(
       handleStop
     );
     // there is a useEffect to check when the game is won
-  } else if (cell.state === "show" && hasFullFlags(r, c, field)) {
+  } else if (cell.state === "show" && adjFlagSurplus(r, c, field) === 0) {
     revealNonFlagNeighbours(
       r,
       c,
@@ -181,9 +191,20 @@ function Cell({ args }) {
     setField,
     handleStart,
     handleStop,
+    usingWarnings,
   } = args;
+  let surplus = adjFlagSurplus(rowInd, colInd, field);
   return (
-    <td className={cellClass(hasMine, state, adjCount, gameState)}>
+    <td
+      className={cellClass(
+        hasMine,
+        state,
+        adjCount,
+        gameState,
+        usingWarnings,
+        surplus
+      )}
+    >
       <button
         type="button"
         className={buttonClass(hasMine, state, adjCount, gameState)}
