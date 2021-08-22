@@ -135,6 +135,7 @@ function Field({ args }) {
                       handleStart,
                       handleStop,
                       usingWarnings,
+                      usingQs,
                     }}
                   />
                 );

@@ -237,7 +237,7 @@ function Header({ args }) {
     <>
       {/* options */}
       <h4>Options</h4>
-      <span className="option">
+      <div className="option">
         <input
           type="checkbox"
           id="usingQs"
@@ -249,10 +249,11 @@ function Header({ args }) {
         {/* // TODO: insert image of ? */}
         <label htmlFor="usingQs">
           Use <img className="sml-img" src={questionMark} alt="'?'" /> in
-          addition to <img className="sml-img" src={flag} alt="flag" />
+          addition to <img className="sml-img" src={flag} alt="flag" /> on
+          right-clicks
         </label>
-      </span>
-      <span className="option">
+      </div>
+      <div className="option">
         <input
           type="checkbox"
           id="usingWarnings"
@@ -261,8 +262,10 @@ function Header({ args }) {
           checked={usingWarnings}
           onChange={() => setUsingWarnings((prev) => !prev)}
         />
-        <label htmlFor="usingWarnings">Highlight flag surpluses</label>
-      </span>
+        <label htmlFor="usingWarnings">
+          Highlight surpluses of adjacent flags
+        </label>
+      </div>
 
       {/* standard game options */}
       <div className="options">

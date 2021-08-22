@@ -6,13 +6,17 @@ import {
 } from "./Field.js";
 
 import flagImage from "./images/flag.svg";
+import markImage from "./images/question-mark.svg";
 import hiddenMineImage from "./images/mine.svg";
 import flaggedMineImage from "./images/flagged-mine.svg";
+import markedMineImage from "./images/marked-mine.svg";
 import clickedMineImage from "./images/clicked-mine.svg";
 
 const flag = <img src={flagImage} alt="F" />;
+const mark = <img src={markImage} alt="?" />;
 const hiddenMine = <img src={hiddenMineImage} alt="M" />;
 const flaggedMine = <img src={flaggedMineImage} alt="FM" />;
+const markedMine = <img src={markedMineImage} alt="?M" />;
 const clickedMine = <img src={clickedMineImage} alt="!!!" />;
 
 function cellDisplay(hasMine, state, adjCount, gameState) {
@@ -24,6 +28,8 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
         return adjCount;
       case "flag":
         return flag;
+      case "mark":
+        return mark;
       default:
         return "Error!";
     }
@@ -32,9 +38,11 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
       return adjCount;
     } else if (state === "hide") {
       return hiddenMine;
-    } else {
-      //state === "flag"
+    } else if (state === "flag") {
       return flaggedMine;
+    } else {
+      //state === "mark"
+      return markedMine;
     }
   } else if (gameState === "lost") {
     if (hasMine) {
@@ -45,6 +53,8 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
           return clickedMine;
         case "flag":
           return flaggedMine;
+        case "mark":
+          return markedMine;
         default:
           return "Error!";
       }
@@ -56,6 +66,8 @@ function cellDisplay(hasMine, state, adjCount, gameState) {
           return adjCount;
         case "flag":
           return flag;
+        case "mark":
+          return mark;
         default:
           return "Error!";
       }
@@ -149,7 +161,16 @@ function handleLeftClick(
   }
 }
 
-function handleRightClick(e, r, c, gameState, setFlagCount, field, setField) {
+function handleRightClick(
+  e,
+  r,
+  c,
+  gameState,
+  setFlagCount,
+  field,
+  setField,
+  usingQs
+) {
   e.preventDefault();
   // don't do anything if the game is over
   if (gameState === "won" || gameState === "lost") {
@@ -165,11 +186,18 @@ function handleRightClick(e, r, c, gameState, setFlagCount, field, setField) {
     setFlagCount((prev) => prev + 1);
   } else if (cell.state === "flag") {
     setField((prev) => {
+      let newState = usingQs ? "mark" : "hide";
+      let newField = [...prev];
+      newField[r][c].state = newState;
+      return newField;
+    });
+    setFlagCount((prev) => prev - 1);
+  } else if (cell.state === "mark") {
+    setField((prev) => {
       let newField = [...prev];
       newField[r][c].state = "hide";
       return newField;
     });
-    setFlagCount((prev) => prev - 1);
   }
 }
 
@@ -192,6 +220,7 @@ function Cell({ args }) {
     handleStart,
     handleStop,
     usingWarnings,
+    usingQs,
   } = args;
   let surplus = adjFlagSurplus(rowInd, colInd, field);
   return (
@@ -230,7 +259,8 @@ function Cell({ args }) {
             gameState,
             setFlagCount,
             field,
-            setField
+            setField,
+            usingQs
           )
         }
       >
