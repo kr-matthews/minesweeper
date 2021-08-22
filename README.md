@@ -16,7 +16,15 @@ There is a timer, and high-scores are tracked using localStorage.
 
 Optional features: highlighting cells with too many adjacent flags, and cycling through a "?" in addition to a flag on right-clicks.
 
+### Potential Future Features
+
+Change flags to being set on key-down.
+
+When clicking on a revealed square with insufficient adjacent flags, briefly indicate the adjacent non-flagged (and non-question-marked) cells.
+
 ### Flaws
+
+The timer may be running slightly slowly -- to explore.
 
 useState is over-relied on; many instances should be replaced by useReducer.
 Some logic should be wrapped into custom hooks (as the timer is).
