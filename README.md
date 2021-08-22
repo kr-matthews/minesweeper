@@ -14,11 +14,7 @@ Mines are randomly distributed after the first (left) click, and the first-click
 
 There is a timer, and high-scores are tracked using localStorage.
 
-### Possible future additions
-
-Add a "?" state to cells, in addition to flagged.
-
-Marking cells with too many adjacent flags.
+Optional features: highlighting cells with too many adjacent flags, and cycling through a "?" in addition to a flag on right-clicks.
 
 ### Flaws
 
