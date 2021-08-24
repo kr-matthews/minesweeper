@@ -246,7 +246,6 @@ function Header({ args }) {
           checked={usingQs}
           onChange={() => setUsingQs((prev) => !prev)}
         />
-        {/* // TODO: insert image of ? */}
         <label htmlFor="usingQs">
           Use <img className="sml-img" src={questionMark} alt="'?'" /> in
           addition to <img className="sml-img" src={flag} alt="flag" /> on
