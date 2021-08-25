@@ -12,7 +12,7 @@ Includes flags, and you can click uncovered cells with the correct number of adj
 
 Mines are randomly distributed after the first (left) click, and the first-clicked cell will have no adjacent mines whenever possible (and if not possible, then it will have minimal possible adjacency count).
 
-There is a timer, and high-scores are tracked using localStorage.
+There is a timer, and high-scores are tracked using local storage.
 
 Optional features: highlighting cells with too many adjacent flags, and cycling through a "?" in addition to a flag on right-clicks.
 
@@ -24,10 +24,16 @@ When clicking on a revealed square with insufficient adjacent flags, briefly ind
 
 ### Flaws
 
+On FireFox mobile, holding a flag or question mark will (apparently) still produce the context menu, for unknown reasons.
+
 The timer may be running slightly slowly -- to explore.
 
 useState is over-relied on; many instances should be replaced by useReducer.
+
 Some logic should be wrapped into custom hooks (as the timer is).
+
 There is way too much prop-drilling.
+
 The timer pauses when the window isn't active.
+
 You can install the "React Developer Tools" browser extension and inspect individual cells to see whether they have a mine.
