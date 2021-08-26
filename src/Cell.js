@@ -12,8 +12,12 @@ import flaggedMineImage from "./images/flagged-mine.svg";
 import markedMineImage from "./images/marked-mine.svg";
 import clickedMineImage from "./images/clicked-mine.svg";
 
-const flag = <img src={flagImage} alt="F" />;
-const mark = <img src={markImage} alt="?" />;
+const flag = (
+  <img src={flagImage} alt="F" onContextMenu={(e) => e.preventDefault()} />
+);
+const mark = (
+  <img src={markImage} alt="?" onContextMenu={(e) => e.preventDefault()} />
+);
 const hiddenMine = <img src={hiddenMineImage} alt="M" />;
 const flaggedMine = <img src={flaggedMineImage} alt="FM" />;
 const markedMine = <img src={markedMineImage} alt="?M" />;
@@ -233,6 +237,7 @@ function Cell({ args }) {
         usingWarnings,
         surplus
       )}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <button
         type="button"

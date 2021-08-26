@@ -26,11 +26,9 @@ When clicking on a revealed square with insufficient adjacent flags, briefly ind
 
 On FireFox mobile, holding a flag or question mark will (apparently) still produce the context menu, for unknown reasons.
 
-The timer may be running slightly slowly -- to explore.
-
 useState is over-relied on; many instances should be replaced by useReducer.
 
-Some logic should be wrapped into custom hooks (as the timer is).
+Some logic should be wrapped into custom hooks (as the timer is -- though that itself has some issues).
 
 There is way too much prop-drilling.
 
