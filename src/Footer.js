@@ -28,7 +28,7 @@ function convertTime(milliseconds) {
   }
   let seconds = Math.floor(milliseconds / 1000);
   let secondsString = seconds.toString();
-  let decimal = (milliseconds % 1000) / 10;
+  let decimal = Math.floor((milliseconds % 1000) / 10);
   let decimalString = decimal < 10 ? "0" + decimal : decimal.toString();
   return [secondsString, decimalString];
 }

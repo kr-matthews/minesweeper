@@ -52,9 +52,8 @@ function App() {
       gameState === "ongoing" &&
       revealCount + mineCount === field.length * field[0].length
     ) {
-      handleStop();
+      handleStop(time);
       setGameState("won");
-      // PROBLEM: highscore is sometimes .01 below final time
       updateHighScore(field.length, field[0].length, mineCount, time);
     }
   }, [

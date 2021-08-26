@@ -1,26 +1,34 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 function useTimer() {
-  // time in milliseconds
+  // everything in milliseconds
+  const updatePeriod = 10;
+
+  const [startTime, setStartTime] = useState(null);
   const [time, setTime] = useState(0);
   const [state, setState] = useState("reset");
-  const intRef = useRef(null);
+  const [int, setInt] = useState(null);
 
   function handleStart() {
+    let startAt = Date.now();
+    setStartTime(startAt);
     setState("running");
-    // update every 0.01 seconds, ie track 13.48 seconds
-    intRef.current = setInterval(() => setTime((prev) => prev + 10), 10);
+    setInt(setInterval(() => setTime(Date.now() - startAt), updatePeriod));
   }
 
-  function handleStop() {
-    clearInterval(intRef.current);
+  function handleStop(time = null) {
+    let endTime = time === null ? Date.now() - startTime : time;
+    clearInterval(int);
+    setStartTime(null);
     setState("stopped");
+    setTime(endTime);
   }
 
   function handleReset() {
-    clearInterval(intRef.current);
-    setTime(0);
+    clearInterval(int);
+    setStartTime(null);
     setState("reset");
+    setTime(0);
   }
 
   return { time, state, handleStart, handleStop, handleReset };
