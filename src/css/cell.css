@@ -23,6 +23,9 @@
 
 .cell button img {
   vertical-align: middle;
+  /* potential fix for being too small on ipad pro */
+  width: 100%;
+  height: 100%;
 }
 
 .cell.hidden {

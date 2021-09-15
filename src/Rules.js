@@ -21,7 +21,7 @@ function RulesText() {
         right-click it again.
       </p>
       <p>
-        If you click an aready-uncovered cell and its number matches the number
+        If you click an already-uncovered cell and its number matches the number
         of adjacent flags, all other adjecent cells will be uncovered. This can
         save you some clicks, but isn't necessary.
       </p>
