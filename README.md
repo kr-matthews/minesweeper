@@ -32,6 +32,4 @@ Some logic should be wrapped into custom hooks (as the timer is -- though that i
 
 There is way too much prop-drilling.
 
-The timer pauses when the window isn't active.
-
 You can install the "React Developer Tools" browser extension and inspect individual cells to see whether they have a mine.
