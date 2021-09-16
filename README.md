@@ -2,7 +2,7 @@
 
 ### Play
 
-[https://kr-matthews.github.io/minesweeper/](https://kr-matthews.github.io/minesweeper/)
+On GitHub Pages at [https://kr-matthews.github.io/minesweeper/](https://kr-matthews.github.io/minesweeper/).
 
 ### Features
 
