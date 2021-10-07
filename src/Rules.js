@@ -22,7 +22,7 @@ function RulesText() {
       </p>
       <p>
         If you click an already-uncovered cell and its number matches the number
-        of adjacent flags, all other adjecent cells will be uncovered. This can
+        of adjacent flags, all other adjacent cells will be uncovered. This can
         save you some clicks, but isn't necessary.
       </p>
       <p>
