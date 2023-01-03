@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import ConfirmAndAct from "./ConfirmAndAct.js";
 import Rules from "./Rules.js";
-import Links from "./links/Links.js";
 
 function message(gameState, isHighScore) {
   switch (gameState) {
@@ -98,7 +97,6 @@ function Footer({ args }) {
         />
       )}
       <Rules />
-      <Links gitHubLink="https://github.com/kr-matthews/minesweeper" />
     </>
   );
 }
