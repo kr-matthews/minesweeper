@@ -1,4 +1,11 @@
 import { useState, useEffect } from "react";
+import {
+  WithHeavyFooter,
+  Body,
+  HeavyFooter,
+  HomeLink,
+  CodeLink,
+} from "footer-dependency/dist/lib";
 
 import useTimer from "./useTimer.js";
 import useHighScores from "./useHighScores.js";
@@ -31,17 +38,13 @@ function App() {
   // time how long it takes to solve
   const { time, handleStart, handleStop, handleReset } = useTimer();
   // storage for high-scores
-  const {
-    getHighScore,
-    updateHighScore,
-    resetHighScore,
-    resetHighScores,
-  } = useHighScores();
+  const { getHighScore, updateHighScore, resetHighScore, resetHighScores } =
+    useHighScores();
   // high-score for current field
   const highScore = getHighScore(field.length, field[0].length, mineCount);
   // using "?"s in addition to flags
   const [usingQs, setUsingQs] = useState(false);
-  // highlight cells with too many adj falgs?
+  // highlight cells with too many adj flags?
   const [usingWarnings, setUsingWarnings] = useState(false);
 
   // effects
@@ -69,51 +72,57 @@ function App() {
   // return
 
   return (
-    <>
-      <h1>Minesweeper</h1>
-      <Header
-        args={{
-          setMineCount,
-          setRevealCount,
-          setFlagCount,
-          setGameState,
-          setField,
-          handleReset,
-          usingQs,
-          setUsingQs,
-          usingWarnings,
-          setUsingWarnings,
-        }}
-      />
-      <Field
-        args={{
-          mineCount,
-          gameState,
-          setGameState,
-          field,
-          setField,
-          setRevealCount,
-          setFlagCount,
-          handleStart,
-          handleStop,
-          usingQs,
-          usingWarnings,
-        }}
-      />
-      <Footer
-        args={{
-          m: field.length,
-          n: field[0].length,
-          time,
-          highScore,
-          gameState,
-          mineCount,
-          flagCount,
-          resetHighScore,
-          resetHighScores,
-        }}
-      />
-    </>
+    <WithHeavyFooter>
+      <Body>
+        <h1>Minesweeper</h1>
+        <Header
+          args={{
+            setMineCount,
+            setRevealCount,
+            setFlagCount,
+            setGameState,
+            setField,
+            handleReset,
+            usingQs,
+            setUsingQs,
+            usingWarnings,
+            setUsingWarnings,
+          }}
+        />
+        <Field
+          args={{
+            mineCount,
+            gameState,
+            setGameState,
+            field,
+            setField,
+            setRevealCount,
+            setFlagCount,
+            handleStart,
+            handleStop,
+            usingQs,
+            usingWarnings,
+          }}
+        />
+        <Footer
+          args={{
+            m: field.length,
+            n: field[0].length,
+            time,
+            highScore,
+            gameState,
+            mineCount,
+            flagCount,
+            resetHighScore,
+            resetHighScores,
+          }}
+        />
+      </Body>
+      <HeavyFooter>
+        <HomeLink />
+        <CodeLink gitHubRepoName="minesweeper" />
+      </HeavyFooter>
+    </WithHeavyFooter>
   );
 }
 
