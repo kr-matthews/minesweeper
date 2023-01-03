@@ -2,6 +2,8 @@
 
 This is a simple single-page application for one human player to play the classic game minesweeper.
 
+![Screenshot](/src/images/screenshot.png)
+
 ## Play
 
 On GitHub Pages at [https://kr-matthews.github.io/minesweeper/](https://kr-matthews.github.io/minesweeper/).
